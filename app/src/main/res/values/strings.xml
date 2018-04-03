@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bit</string>
+    <string name="good_bit">Good Bit</string>
+    <string name="bad_bit">Bad Bit</string>
 </resources>
