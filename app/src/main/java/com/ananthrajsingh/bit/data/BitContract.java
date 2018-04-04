@@ -43,6 +43,8 @@ public class BitContract {
    */
     public static final class MainTableEntry implements BaseColumns {
 
+      public static final String TABLE_NAME = "main";
+
     // CONTENT_URI_MAIN is used to query Main table from content provider
       public static final Uri CONTENT_URI_MAIN = BASE_CONTENT_URI.buildUpon()
                                                 .appendPath(PATH_MAIN_TABLE)

@@ -40,7 +40,32 @@ public class BitDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-    // TODO 4 - Create Main table
+    // COMPLETED 4 - Create Main table
+
+        final String SQL_CREATE_MAIN_TABLE =
+                        "CREATE TABLE " + BitContract.MainTableEntry.TABLE_NAME + " (" +
+
+                                //_ID is not declared explicitly but since we implemented BaseColumns class,
+                                // which has this field
+                                BitContract.MainTableEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+                                BitContract.MainTableEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+
+                                BitContract.MainTableEntry.COLUMN_TODAYS_BIT_COUNT + " INTEGER NOT NULL, " +
+
+                                BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT + " INTEGER NOT NULL" +
+
+                                ");";
+        /*
+         * execSQL(..) is used to execute any SQL statement.
+         * Though it is advised to use insert(), update() etc where ever possible.
+         * This is due to fact that execSQL() returns no information about executed statement.
+         * There is no significant speed difference also.
+         * However, to create a table we have to use this function.
+         */
+        db.execSQL(SQL_CREATE_MAIN_TABLE);
+
+
     }
 
 
@@ -60,5 +85,7 @@ public class BitDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO 5 - write upgrading code
+        db.execSQL("DROP TABLE IF EXISTS " + BitContract.MainTableEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
