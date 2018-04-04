@@ -77,7 +77,7 @@ public class BitContract {
     public static final class FrequencTableEntry implements BaseColumns {
 
       //This will store the frequency of bit of that day
-      //in the form of int.
+      //in the form of int
         public static final String COLUMN_FREQUENCY = "frequency";
 
     }
