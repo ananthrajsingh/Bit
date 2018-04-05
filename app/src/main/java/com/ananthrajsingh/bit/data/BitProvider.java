@@ -36,8 +36,8 @@ public class BitProvider extends ContentProvider {
     public static final int CODE_MAIN_WITH_ID = 101;
     //Main table's row with provided _ID
 
-    public static final int CODE_FREQUENCY = 200;
-    //Whole frequency table
+//    public static final int CODE_FREQUENCY = 200;
+//    //Whole frequency table
 
   /*
    *    This is the private Uri Matcher used by this ContentProvider. We declare this
@@ -68,15 +68,45 @@ public class BitProvider extends ContentProvider {
         final UriMatcher bitUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = BitContract.CONTENT_AUTHORITY;
 
+        /* Whenever we find a match, the match() will return the respective code associated with
+         * that that URI. We have to specify that code here while adding URI
+         */
+
         /* This URI is content://com.ananthrajsingh.bit/main                                  */
         bitUriMatcher.addURI(authority, BitContract.PATH_MAIN_TABLE, CODE_MAIN );
 
-        /* This URI is content://com.ananthrajsingh.bit/main/#                                  */
+        /* This URI is content://com.ananthrajsingh.bit/main/#
+        *  The URI will look something like this content://com.ananthrajsingh.bit/main/23
+        *  meaning, show the habit with _ID = 23 .
+        *  */
         bitUriMatcher.addURI(authority, BitContract.PATH_MAIN_TABLE + "/#" , CODE_MAIN_WITH_ID);
 
-        /* This URI is content://com.ananthrajsingh.bit/*                                      */
-        bitUriMatcher.addURI(authority, "/*" , CODE_FREQUENCY);
+//        /* This URI is content://com.ananthrajsingh.bit/*                                      */
+//        bitUriMatcher.addURI(authority, "/*" , CODE_FREQUENCY);
+
+        return bitUriMatcher;
 
     }
 
+    /**
+     * onCreate is used to initialize the registered Content Provider. This method is called
+     * on the main thread at the application launch time. Therefore it should be taken care that
+     * no lengthy operations are carried in this.
+     *
+     * Deferred initialization keeps application startup fast, avoids unnecessary work if the
+     * provider turns out not to be needed, and stops database errors (such as a full disk) from
+     * halting application launch.
+     *
+     * @return true if Content Provider is successfully initialized, else false
+     */
+    @Override
+    public boolean onCreate() {
+
+        /*
+         * BitDbHelper's constructor is lightweight, therefore we are safe to perform this
+         * initialization.
+         */
+        mOpenHelper = new BitDbHelper(getContext());
+        return true;
+    }
 }
