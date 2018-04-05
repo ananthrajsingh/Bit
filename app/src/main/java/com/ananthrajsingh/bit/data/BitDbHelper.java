@@ -84,7 +84,10 @@ public class BitDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO 5 - write upgrading code
+        // COMPLETED 5 - write upgrading code
+
+        //When we will work on further versions, we will take care that data is not lost.
+        //But for now, this code will do.
         db.execSQL("DROP TABLE IF EXISTS " + BitContract.MainTableEntry.TABLE_NAME);
         onCreate(db);
     }
