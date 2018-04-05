@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
  *
  * TABLE 1 has columns BIT_NAME, BIT_TODAY, BIT_MAX
  *
- * TABLE 2 has column BIT_COUNT
+ * TABLE 2 has column BIT_COUNT and BIT_DATE
  *
  * Every row of table 1 will have its separate table 2
  *
@@ -81,6 +81,7 @@ public class BitContract {
       //This will store the frequency of bit of that day
       //in the form of int
         public static final String COLUMN_FREQUENCY = "frequency";
+        public static final String COLUMN_DATE = "date";
 
     }
 

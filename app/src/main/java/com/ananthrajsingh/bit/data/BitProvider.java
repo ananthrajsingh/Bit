@@ -1,8 +1,13 @@
 package com.ananthrajsingh.bit.data;
 
 import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import static android.R.attr.id;
 
 /**
  * Created by Ananth on 4/5/2018.
@@ -36,8 +41,10 @@ public class BitProvider extends ContentProvider {
     public static final int CODE_MAIN_WITH_ID = 101;
     //Main table's row with provided _ID
 
-//    public static final int CODE_FREQUENCY = 200;
-//    //Whole frequency table
+    public static final int CODE_FREQUENCY = 200;
+    //Whole frequency table
+
+    public static final int CODE_FREQUENCY_WITH_DATE = 201
 
   /*
    *    This is the private Uri Matcher used by this ContentProvider. We declare this
@@ -81,8 +88,22 @@ public class BitProvider extends ContentProvider {
         *  */
         bitUriMatcher.addURI(authority, BitContract.PATH_MAIN_TABLE + "/#" , CODE_MAIN_WITH_ID);
 
-//        /* This URI is content://com.ananthrajsingh.bit/*                                      */
-//        bitUriMatcher.addURI(authority, "/*" , CODE_FREQUENCY);
+
+        /* This URI is content://com.ananthrajsingh.bit/*                                      */
+        bitUriMatcher.addURI(authority, "/*" , CODE_FREQUENCY);
+
+        bitUriMatcher.addURI(authority, "/*/#", CODE_FREQUENCY_WITH_DATE);
+
+         /*
+        * **************************************************************************************
+         * BEWARE!
+         * Don't change the order of addURI() calls.
+         * Notice that "content://com.ananthrajsingh.bit/main" qualifies both for
+         * CODE_MAIN and CODE_FREQUENCY. So, if a URI is "content://com.ananthrajsingh.bit/*"
+         * then, first CODE_MAIN must be checked, if it doesn't match for CODE_MAIN
+         * it means that we are concerned about some frequency table.
+         ****************************************************************************************
+         * */
 
         return bitUriMatcher;
 
@@ -109,4 +130,45 @@ public class BitProvider extends ContentProvider {
         mOpenHelper = new BitDbHelper(getContext());
         return true;
     }
+
+
+    /**
+     * This function will bw used to insert a new row into the Main table. As a new row is
+     * added to Main, a corresponding single column table is added to keep track of that Habit.
+     * We will insert rows one by one.
+     *
+     * @param uri the uri where the
+     * @param values
+     * @return
+     */
+    @Nullable
+    @Override
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+        final int match = sUriMatcher.match(uri);
+        Uri returnUri = null;
+
+        switch (match){
+
+            /*
+             * CODE_MAIN means we are inserting new habit. We will add a new row to Main
+             * table using insertHabit. We will create a corresponding Frequency table
+             * using makeFrequencyTable.
+             */
+            case CODE_MAIN:
+                returnUri = insertHabit(uri, values); //TODO 6 Add this function
+                makeFrequencyTable(returnUri, uri); //TODO 7 Add this function to FrequencyUtils
+                break;
+            case CODE_FREQUENCY_WITH_DATE:
+                returnUri = incrementBitFrequency(uri); // TODO 8 Add this function to FrequencyUtils
+                break;
+
+            default:
+                throw new UnsupportedOperationException("The uri turned out to be INVALID");
+        }
+
+        return returnUri;
+
+    }
 }
+
+
