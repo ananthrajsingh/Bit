@@ -1,9 +1,13 @@
 package com.ananthrajsingh.bit.utilities;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.ananthrajsingh.bit.data.BitContract;
 import com.ananthrajsingh.bit.data.BitDbHelper;
+
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 
 /**
  * Created by Ananth on 4/5/2018.
@@ -35,5 +39,34 @@ public class FrequencyUtils {
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         database.execSQL(FREQUENCY_TABLE_STATEMENT);
         return true;
+    }
+
+    /**
+     * This will calculate today's date and create new row into the provided frequency table.
+     * This new row will have today's date in date column and 1 in frequency column.
+     *
+     * @param uri will give us the name of Frequency table
+     * @return uri returned by insert funtion of database
+     */
+    public static Uri addRowToFrequencyTable(Uri uri, BitDbHelper databaseHelper){
+        String todaysDate = getTodaysDate();
+        ContentValues values = new ContentValues();
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        values.put(BitContract.FrequencTableEntry.COLUMN_FREQUENCY, 1);
+        values.put(BitContract.FrequencTableEntry.COLUMN_DATE, todaysDate);
+
+        String tableName = getTableNameFromUri(uri);
+
+        long id = database.insert(tableName, null, values);
+        /* This is expected to return something like content://com.ananthrajsingh/bit/12 */
+        return uri.buildUpon().
+                appendPath(Long.toString(id)).
+                build();
+    }
+
+    public static String getTableNameFromUri(Uri uri){
+
+        return uri.getLastPathSegment();
     }
 }

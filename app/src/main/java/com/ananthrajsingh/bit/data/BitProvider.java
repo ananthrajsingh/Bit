@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import static android.R.attr.id;
+import static com.ananthrajsingh.bit.utilities.FrequencyUtils.addRowToFrequencyTable;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.makeFrequencyTable;
 
 /**
@@ -97,7 +98,7 @@ public class BitProvider extends ContentProvider {
         /* This URI is content://com.ananthrajsingh.bit/*                                      */
         bitUriMatcher.addURI(authority, "/*" , CODE_FREQUENCY);
 
-        bitUriMatcher.addURI(authority, "/*/#", CODE_FREQUENCY_WITH_DATE);
+        bitUriMatcher.addURI(authority, "/*/*", CODE_FREQUENCY_WITH_DATE);
 
          /*
         * **************************************************************************************
@@ -136,6 +137,24 @@ public class BitProvider extends ContentProvider {
         return true;
     }
 
+     /*
+    ******************************************************************************************************
+    *  1.) We will create a new Frequency table in insert(..) as soon as new habit is inserted
+    *
+    *
+    *  2.) Now, we have to increment a bit for a habit. We will query in query(..) whether today's
+    *  date exists or not.
+    *   Two cases arise-
+    *      A.) Row for that day doesn't exists
+    *      B.) Row for that day exists
+    *
+    *
+    *  3.) For  (A) we will create new row in that table with today's date and set frequency to 1.
+    *  This will happen in insert(..) itself.
+    *  For  (B) we will update the frequency (incrementing) in update(..) method.
+    * ****************************************************************************************************
+     */
+
 
     /**
      * This function will bw used to insert a new row into the Main table. As a new row is
@@ -163,17 +182,18 @@ public class BitProvider extends ContentProvider {
              */
             case CODE_MAIN:
                 returnId = insertHabit(uri, values); //COMPLETED 6 Add this function
-                isCreated = makeFrequencyTable(returnId, mOpenHelper); //TODO 7 Add this function to FrequencyUtils
+                isCreated = makeFrequencyTable(returnId, mOpenHelper); //COMPLETED 7 Add this function to FrequencyUtils
                 if (!isCreated){
                     return null;
                 }
                 break;
             /*
-             * CODE_FREQUENCY_WITH_DATE means we want to increment a bit in  habit
-             *
+             * We are here at CODE_FREQUENCY because there was no row for today in Frequency table.
+             * Now here we will create one using helper methods. The frequency of that habit is to
+             * be set to 1.
              */
-            case CODE_FREQUENCY_WITH_DATE:
-                returnUri = incrementBitFrequency(uri); // TODO 8 Add this function to FrequencyUtils
+            case CODE_FREQUENCY:
+                returnUri = addRowToFrequencyTable(uri, mOpenHelper); // TODO 8 Add this function to FrequencyUtils
                 break;
 
             default:
@@ -183,6 +203,8 @@ public class BitProvider extends ContentProvider {
         return returnUri;
 
     }
+
+
 
     private long insertHabit(Uri uri, ContentValues values){
 
