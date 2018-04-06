@@ -1,13 +1,18 @@
 package com.ananthrajsingh.bit.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import static android.R.attr.id;
+import static com.ananthrajsingh.bit.utilities.FrequencyUtils.makeFrequencyTable;
 
 /**
  * Created by Ananth on 4/5/2018.
@@ -145,7 +150,9 @@ public class BitProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         final int match = sUriMatcher.match(uri);
+        long returnId;
         Uri returnUri = null;
+        boolean isCreated = false;
 
         switch (match){
 
@@ -155,9 +162,16 @@ public class BitProvider extends ContentProvider {
              * using makeFrequencyTable.
              */
             case CODE_MAIN:
-                returnUri = insertHabit(uri, values); //TODO 6 Add this function
-                makeFrequencyTable(returnUri, uri); //TODO 7 Add this function to FrequencyUtils
+                returnId = insertHabit(uri, values); //COMPLETED 6 Add this function
+                isCreated = makeFrequencyTable(returnId, mOpenHelper); //TODO 7 Add this function to FrequencyUtils
+                if (!isCreated){
+                    return null;
+                }
                 break;
+            /*
+             * CODE_FREQUENCY_WITH_DATE means we want to increment a bit in  habit
+             *
+             */
             case CODE_FREQUENCY_WITH_DATE:
                 returnUri = incrementBitFrequency(uri); // TODO 8 Add this function to FrequencyUtils
                 break;
@@ -168,6 +182,29 @@ public class BitProvider extends ContentProvider {
 
         return returnUri;
 
+    }
+
+    private long insertHabit(Uri uri, ContentValues values){
+
+
+        //Check whether habit has a name or not
+        String name = values.getAsString(BitContract.MainTableEntry.COLUMN_NAME);
+        if (name == null){
+            throw new IllegalArgumentException("Name of habit cannot be empty. URI - " + uri);
+        }
+
+        /* get writable database since we need to write in database */
+        SQLiteDatabase database = mOpenHelper.getWritableDatabase();
+
+        /* add values to database */
+        long id = database.insert(BitContract.MainTableEntry.TABLE_NAME, null, values);
+
+        if (id == -1){
+            Log.e("BitProvider error", "Failed to add row into Main table for uri - " + uri);
+            return id;
+        }
+
+        return id;
     }
 }
 

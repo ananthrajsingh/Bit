@@ -80,6 +80,15 @@ public class BitContract {
 
       //This will store the frequency of bit of that day
       //in the form of int
+
+        /*
+        * The frequency table will be unique for each habit.
+        * Therefore we will use _ID of main table (which is primary
+        * key) to build the name of the frequency table. The
+        * name of tables will be like frequency_8, frequency_21 etc.
+        * Therefore we will append _ID to TABLE_BASE_NAME.
+        */
+        public static final String TABLE_BASE_NAME = "frequency_";
         public static final String COLUMN_FREQUENCY = "frequency";
         public static final String COLUMN_DATE = "date";
 
