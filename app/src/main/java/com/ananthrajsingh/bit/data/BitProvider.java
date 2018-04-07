@@ -308,6 +308,64 @@ public class BitProvider extends ContentProvider {
         return cursor;
 
     }
+
+    /**
+     * In update(..), we will increment the bit for a particular habit. Here we will assume that
+     * today's entry exists. Currently, updating the name of habit is not allowed for the sake
+     * of simplicity of our application.
+     *
+     * @param uri uri to update table
+     * @param values not used here
+     * @param selection this will be frequency column
+     * @param selectionArgs this will be extracted from uri, so useless again
+     * @return the number of rows updated
+     */
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+        int numOfRowsUpdated = 0;
+        String tableName = getTableNameFromUriWithDate(uri);
+        String date = uri.getLastPathSegment();
+        String[] selectionArguments = {date};
+            /*
+             * Below case will have to get current value of frequency in order to inrement the value
+             * by one. Therefore, we will call query(..) method to get the current count of frequency.
+             * This uri will get into CODE_FREQUENCY_WITH_DATE case. Once we get the current value
+             * then we will build a content values object and update
+             * the row.
+             */
+        Cursor cursor = query(uri, null, null, null, null, null);
+            /* Extract current frequency */
+        int oldFrequency = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+        long id = cursor.getLong(cursor.getColumnIndex(BitContract.FrequencTableEntry._ID));
+        cursor.close();
+        int newFrequency = oldFrequency + 1 ;
+
+            /*Build a new ContentValues object to update the row we are dealing with */
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BitContract.FrequencTableEntry._ID, id);
+        contentValues.put(BitContract.FrequencTableEntry.COLUMN_DATE, date);
+        contentValues.put(BitContract.FrequencTableEntry.COLUMN_FREQUENCY, newFrequency);
+
+
+        switch (sUriMatcher.match(uri)){
+
+
+            case CODE_FREQUENCY_WITH_DATE:
+                numOfRowsUpdated = mOpenHelper.getWritableDatabase().update(
+                        tableName,
+                        contentValues,
+                        BitContract.FrequencTableEntry.COLUMN_DATE + " = ? ",
+                        selectionArguments
+                );
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid uri sent to Provider :( - " + uri);
+
+        }
+        return numOfRowsUpdated;
+    }
 }
 
 
