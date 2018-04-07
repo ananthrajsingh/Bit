@@ -69,4 +69,13 @@ public class FrequencyUtils {
 
         return uri.getLastPathSegment();
     }
+    public static String getTableNameFromUriWithDate(Uri uri){
+        /*
+         * This will return the path segment at provided index. For example
+         * content://com.ananthrajsingh.bit/frequency_22/21
+         * get(0) will return frequency_22
+         * get(1) will return 21
+         */
+        return uri.getPathSegments().get(0);
+    }
 }

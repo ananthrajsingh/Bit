@@ -4,15 +4,18 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.CancellationSignal;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import static android.R.attr.id;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.addRowToFrequencyTable;
+import static com.ananthrajsingh.bit.utilities.FrequencyUtils.getTableNameFromUriWithDate;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.makeFrequencyTable;
 
 /**
@@ -193,7 +196,7 @@ public class BitProvider extends ContentProvider {
              * be set to 1.
              */
             case CODE_FREQUENCY:
-                returnUri = addRowToFrequencyTable(uri, mOpenHelper); // TODO 8 Add this function to FrequencyUtils
+                returnUri = addRowToFrequencyTable(uri, mOpenHelper); // COMPLETED 8 Add this function to FrequencyUtils
                 break;
 
             default:
@@ -227,6 +230,83 @@ public class BitProvider extends ContentProvider {
         }
 
         return id;
+    }
+
+    /**
+     * We are going to use this method in 3 cases-
+     *  1.) Show all habits in recycler view
+     *  2.) Show a detailed view of a particular habit
+     *  3.) Check whether today's row exists
+     *
+     *  For (3), Uri will have the table's name whose Frequency table is to be checked for today's row.
+     *  We will query its corresponding Frequency table, two cases arise-
+     *      A) Row is found, then in update(..) we will increment bit
+     *      B) Row is not found, then in insert(..) we will add new row
+     *
+     * @param uri
+     * @param projection
+     * @param selection
+     * @param selectionArgs
+     * @param sortOrder
+     * @param cancellationSignal
+     * @return
+     */
+    @Nullable
+    @Override
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder,
+                        @Nullable CancellationSignal cancellationSignal) {
+        Cursor cursor;
+
+        switch (sUriMatcher.match(uri)){
+            case CODE_MAIN:
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        BitContract.MainTableEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                        );
+                break;
+            case CODE_MAIN_WITH_ID:
+                String id = uri.getLastPathSegment();
+                String[] selectionArguments = {id};
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        BitContract.MainTableEntry.TABLE_NAME,
+                        projection,
+                        BitContract.MainTableEntry._ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder
+                        );
+                break;
+            case CODE_FREQUENCY_WITH_DATE:
+                String dateOfHabitBit = uri.getLastPathSegment();
+
+                String[] selectionArgumentsDate = {dateOfHabitBit};
+
+                String tableName = getTableNameFromUriWithDate(uri);
+
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        tableName,
+                        projection,
+                        BitContract.FrequencTableEntry.COLUMN_DATE + " = ? ",
+                        selectionArgumentsDate,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            default:
+                throw new IllegalArgumentException("Query cannot be completed, cuz unknown Uri - " + uri);
+
+        }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
+
     }
 }
 
