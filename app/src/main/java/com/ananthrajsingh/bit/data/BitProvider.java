@@ -1,19 +1,15 @@
 package com.ananthrajsingh.bit.data;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.CancellationSignal;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import static android.R.attr.id;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.addRowToFrequencyTable;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.getTableNameFromUriWithDate;
 import static com.ananthrajsingh.bit.utilities.FrequencyUtils.makeFrequencyTable;
@@ -53,7 +49,7 @@ public class BitProvider extends ContentProvider {
     public static final int CODE_FREQUENCY = 200;
     //Whole frequency table
 
-    public static final int CODE_FREQUENCY_WITH_DATE = 201
+    public static final int CODE_FREQUENCY_WITH_DATE = 201;
 
   /*
    *    This is the private Uri Matcher used by this ContentProvider. We declare this
@@ -248,14 +244,12 @@ public class BitProvider extends ContentProvider {
      * @param selection
      * @param selectionArgs
      * @param sortOrder
-     * @param cancellationSignal
      * @return
      */
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
-                        @Nullable String[] selectionArgs, @Nullable String sortOrder,
-                        @Nullable CancellationSignal cancellationSignal) {
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         Cursor cursor;
 
         switch (sUriMatcher.match(uri)){
@@ -334,7 +328,7 @@ public class BitProvider extends ContentProvider {
              * then we will build a content values object and update
              * the row.
              */
-        Cursor cursor = query(uri, null, null, null, null, null);
+        Cursor cursor = query(uri, null, null, null, null);
             /* Extract current frequency */
         int oldFrequency = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
         long id = cursor.getLong(cursor.getColumnIndex(BitContract.FrequencTableEntry._ID));
@@ -366,6 +360,41 @@ public class BitProvider extends ContentProvider {
         }
         return numOfRowsUpdated;
     }
+
+    /**
+     * Habits can be deleted. This method will delete a row from main table. One more thimg,
+     * we will also delete the corresponding frequency table from the database
+     *
+     * @param uri which row is to be deleted
+     * @param selection column name
+     * @param selectionArgs if these value found in said column name, delete it
+     * @return number of rows deleted
+     */
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        int numberOfRowsDeleted = 0;
+
+        String id = uri.getLastPathSegment();
+        String[] selectionArguments = {id};
+
+        switch (sUriMatcher.match(uri)){
+
+            case CODE_MAIN_WITH_ID :
+                numberOfRowsDeleted = mOpenHelper.getWritableDatabase().delete(
+                        BitContract.MainTableEntry.TABLE_NAME,
+                        BitContract.MainTableEntry._ID + " = ? ",
+                        selectionArguments
+                );
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid uri provided to provider - " + uri);
+        }
+        return numberOfRowsDeleted;
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        throw new IllegalArgumentException("WE ARE NOT IMPLEMENTING THIS METHOD");
+    }
 }
-
-
