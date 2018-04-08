@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChooseBitActivity" />
-        <activity android:name=".CreateBit"></activity>
+        <activity android:name=".CreateBit" />
+        <activity android:name=".BitDetail"></activity>
     </application>
 
 </manifest>
