@@ -13,12 +13,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BitDbHelper extends SQLiteOpenHelper {
 
-  //This is the name of database. This should be descriptive and should have extension .db
+  // This is the name of database. This should be descriptive and should have extension .db
     public static final String DATABASE_NAME = "bit.db";
 
-  //This will be incremented when the schema of database changes.
+  // This will be incremented when the schema of database changes.
   // On incrementing, onUpgrade is called.
-  //Database version is stored in sqlite database file itself.
+  // Database version is stored in sqlite database file itself.
     public static final int DATABASE_VERSION = 1;
 
 
