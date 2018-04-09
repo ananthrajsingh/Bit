@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
-import java.util.List;
-
 /**
  * Created by Ananth on 4/8/2018.
  *
@@ -27,7 +25,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
 
     private final Context mContext;
 
-    private final Cursor mCursor;
+    private Cursor mCursor;
 
 
     /**
@@ -113,5 +111,34 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
         mCursor.moveToPosition(position);
         String name = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
         holder.mainTextView.setText(name);
+    }
+
+    /**
+     * This method will take new cursor from main activity. This will help lay out all the data
+     * initially on the screen. We will also use this when new item is added to the database.
+     * In future though, we want to use notifyItemIntserted(position) to add a new item. But that
+     * functionality will be added later. When this method is called, we assume we have a
+     * completely new set of data, so we call notifyDataSetChanged to tell the RecyclerView to update.
+     *
+     * @param newCursor cursor with new items
+     */
+    public void swapCursor(Cursor newCursor){
+        mCursor = newCursor;
+        notifyDataSetChanged();
+        //TODO : Add method addNewItem() to insert a new habit and call notifyItemInserted()
+        //Currently we are calling this same fumction even when a single item is added.
+    }
+
+    /**
+     * This method simply returns the number of items to display. This fuction is called behind
+     * the scenes to help in layout the views and in animations
+     *
+     * @return number of items available in the main table
+     */
+    @Override
+    public int getItemCount() {
+
+        if (mCursor == null) return 0;
+        return mCursor.getCount();
     }
 }
