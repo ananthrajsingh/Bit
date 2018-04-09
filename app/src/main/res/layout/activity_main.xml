@@ -34,6 +34,7 @@
         />
 <!-- THis RecyclerView will show all habits on startup -->
    <android.support.v7.widget.RecyclerView
+       android:id="@+id/recycler_view_main"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:clipToPadding="false"

@@ -130,7 +130,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
     }
 
     /**
-     * This method simply returns the number of items to display. This fuction is called behind
+     * This method simply returns the number of items to display. This function is called behind
      * the scenes to help in layout the views and in animations
      *
      * @return number of items available in the main table
