@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,8 +57,10 @@ public class CreateBit extends AppCompatActivity {
                 //Check is insertion was successful
                 if (returnedUri != null)
                     Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(getBaseContext(), "Not inserted! Check for errors" , Toast.LENGTH_LONG).show();
+                else {
+                    Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
+                    Log.e("CreateBit.java", "Uri sent to db- " + uriToMainTable);
+                }
             }
         });
 
