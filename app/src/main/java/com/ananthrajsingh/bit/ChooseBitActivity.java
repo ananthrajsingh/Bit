@@ -6,14 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
+import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
+
 public class ChooseBitActivity extends AppCompatActivity {
     //This will hold reference to Good Bit button
     private Button mGoodButton;
     //This will hold reference to Bad Bit button
     private Button mBadButton;
 
-    public static final int BAD_BIT_ID = 1;
-    public static final int GOOD_BIT_ID = 2;
+
 
 
     @Override

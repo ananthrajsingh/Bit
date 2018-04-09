@@ -50,6 +50,9 @@ public class BitContract {
                                                 .appendPath(PATH_MAIN_TABLE)
                                                 .build();
 
+      /*Bits are of two types, GOOD_BIT_ID and BAD_BIT_ID */
+      public static final String COLUMN_BIT_TYPE = "bit_type";
+
     //This column will store Strings which the user will enter.
       public static final String COLUMN_NAME = "name";
 

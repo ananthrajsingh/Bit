@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
     private BitAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
+    public static final int BAD_BIT_ID = 1;
+    public static final int GOOD_BIT_ID = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new BitAdapter(this);
 
         /* Attach the adapter to the recycler view in activity_main */
-        mRecyclerView.setAdapter(mAdapter);
+         mRecyclerView.setAdapter(mAdapter);
 
 
 

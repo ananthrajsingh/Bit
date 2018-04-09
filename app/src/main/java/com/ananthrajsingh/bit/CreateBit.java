@@ -12,6 +12,8 @@ public class CreateBit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bit);
         Intent intent = getIntent();
+
+        /*bitId represents whether user wants to insert a bad bit or good bit */
         int bitId = intent.getIntExtra(getString(R.string.bit_id_extra), 0);
 
 

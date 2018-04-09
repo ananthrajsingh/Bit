@@ -51,6 +51,8 @@ public class BitDbHelper extends SQLiteOpenHelper {
 
                                 BitContract.MainTableEntry.COLUMN_NAME + " TEXT NOT NULL, " +
 
+                                BitContract.MainTableEntry.COLUMN_BIT_TYPE + " INTEGER NOT NULL, " +
+
                                 BitContract.MainTableEntry.COLUMN_TODAYS_BIT_COUNT + " INTEGER NOT NULL, " +
 
                                 BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT + " INTEGER NOT NULL" +
