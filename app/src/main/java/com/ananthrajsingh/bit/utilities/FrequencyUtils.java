@@ -26,7 +26,7 @@ public class FrequencyUtils {
      * @param databaseHelper database helper class to get hold of database
      * @return true to signify that this function ran successfully
      */
-    public static boolean makeFrequencyTable(long idToAppend, BitDbHelper databaseHelper){
+    public static boolean  makeFrequencyTable(long idToAppend, BitDbHelper databaseHelper){
 
         int idInInt = (int) idToAppend;
         String idString = Integer.toString(idInInt);
