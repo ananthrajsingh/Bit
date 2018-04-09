@@ -34,6 +34,8 @@ public class DatabaseUtils {
      * @return uri to main table
      */
     public static Uri buildUriToMainTable(){
-        return BitContract.BASE_CONTENT_URI.buildUpon().appendPath(BitContract.PATH_MAIN_TABLE).build();
+//        return BitContract.BASE_CONTENT_URI.buildUpon().appendPath(BitContract.PATH_MAIN_TABLE).build();
+        Uri returnUri = Uri.withAppendedPath(BitContract.BASE_CONTENT_URI, BitContract.PATH_MAIN_TABLE);
+        return returnUri;
     }
 }
