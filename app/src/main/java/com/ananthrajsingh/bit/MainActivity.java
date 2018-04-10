@@ -1,14 +1,21 @@
 package com.ananthrajsingh.bit;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView mRecyclerView;
     private BitAdapter mAdapter;
@@ -16,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int BAD_BIT_ID = 1;
     public static final int GOOD_BIT_ID = 2;
+
+    public static final int DATABASE_LOADER_ID = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,5 +69,60 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        getSupportLoaderManager().initLoader(DATABASE_LOADER_ID, null, this);
+    }
+
+    /*
+    -----------------------------------------------------------------------------
+    MainActivity needs to display the main table contents. Therefore we need to
+    query the table. Query should not be done on main thread. Thus to display
+    main table contents we need to use CursorLoader. That is the reason we are
+    implementing LoaderManager in this class.
+    Use loader manager to do hefty tasks, else your activity will become
+    unresponsive.
+    -----------------------------------------------------------------------------
+     */
+
+    /**
+     * This is one of three callback methods from LoaderManager.LoaderCallback interface.
+     * This is called when the system needs a new Loader to be created. In this we
+     * will query the Main table using a CursorLoader.
+     * We are using only one loader therefore we dont need to check loader id. This
+     * is is used to distinguish between loaders. Still, it is good practise to check
+     * for id.
+     *
+     * @param loaderId id of the current loader that we are going to deal with
+     * @param args any arguments supplied by the caller
+     * @return a new loader instance which is ready to do loading
+     */
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
+
+        /*This will get built uri from helper class*/
+        Uri uri = buildUriToMainTable();
+        switch(loaderId){
+            case DATABASE_LOADER_ID:
+                /*We want all columns and all rows, therefore we are passing null.
+                 *Also, we need no sort order, thus last argument is also null.
+                 */
+                return new CursorLoader(this,
+                        uri,
+                        null,
+                        null,
+                        null,
+                        null);
+            default:
+                throw new IllegalArgumentException("This loader is currently not implemented :( loaderId - " + loaderId);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 }
