@@ -59,7 +59,6 @@ public class CreateBit extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
                 else {
                     Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
-                    Log.e("CreateBit.java", "Uri sent to db- " + uriToMainTable);
                 }
             }
         });

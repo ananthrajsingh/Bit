@@ -181,13 +181,11 @@ public class BitProvider extends ContentProvider {
              * using makeFrequencyTable.
              */
             case CODE_MAIN:
-                Log.e("BitProvider.java", "We are in case CODE_MAIN");
 
                 returnId = insertHabit(uri, values); //COMPLETED 6 Add this function
                 returnUri = uri.buildUpon().
                         appendPath(Long.toString(returnId)).
                         build();
-                Log.e("BitProvider.java", "returned id - " + returnId);
 
                 isCreated = makeFrequencyTable(returnId, mOpenHelper); //COMPLETED 7 Add this function to FrequencyUtils
                 if (!isCreated){
@@ -206,7 +204,6 @@ public class BitProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("The uri turned out to be INVALID");
         }
-        Log.e("BitProvider.java", "return uri - " + returnUri);
 
         return returnUri;
 
