@@ -1,6 +1,7 @@
 package com.ananthrajsingh.bit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
@@ -61,8 +63,18 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          */
         @Override
         public void onClick(View v) {
+            Toast.makeText(v.getContext(), "Item touched at position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            /*
+             * This tag was set in onBindViewHolder(..). This will be passed to BitDetail
+             * activity as we want to get access to the row of touched item in Main table
+             */
+            Long idOfItem = (Long) v.getTag();
+            Intent intent = new Intent(v.getContext(), BitDetail.class);
+            intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
+            v.getContext().startActivity(intent);
 
         }
+
     }
 
     /**
@@ -110,7 +122,15 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
     public void onBindViewHolder(BitAdapterViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         String name = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
+        /*
+         * We will need _ID in BitDetail activity to display the details of clicked activity
+         * Now, we cannot pass getAdapterPosition() to BitDetail activity, that will work until
+         * an item is deleted, then position and id will mismatch. To solve this we will add
+         * a tag to every item of its corresponding id represented in the Main table
+         */
+        Long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
         holder.mainTextView.setText(name);
+        holder.mainTextView.setTag(id);
     }
 
     /**

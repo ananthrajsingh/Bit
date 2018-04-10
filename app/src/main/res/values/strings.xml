@@ -3,5 +3,6 @@
     <string name="good_bit">Good Bit</string>
     <string name="bad_bit">Bad Bit</string>
 
-    <string name="bit_id_extra">Bit ID</string>
+    <string name="bit_id_extra">bit_id</string>
+    <string name="item_id_extra">item_id</string>
 </resources>

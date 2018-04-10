@@ -18,6 +18,8 @@ public class CreateBit extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextMaxCount;
+    /*declaring here so we can cancel if previous toast is not null*/
+    public Toast toast;
 
 
     @Override
@@ -38,6 +40,10 @@ public class CreateBit extends AppCompatActivity {
             /* We will get the information in EditText fields and pass to database*/
             @Override
             public void onClick(View v) {
+
+                /*
+                 * Check if user hasn't left any field empty. That exception will be catched.
+                 */
                 try {
                     editTextName = (EditText) findViewById(R.id.editTextName);
 
@@ -54,9 +60,6 @@ public class CreateBit extends AppCompatActivity {
                 /*
                  * We are inserting new row into the main table
                  */
-
-
-
                     ContentValues values = makeContentValuesToInsert(nameOfHabit, bitId, maximumFrequency);
                     Uri uriToMainTable = buildUriToMainTable();
                     Uri returnedUri = getContentResolver().insert(uriToMainTable, values);
@@ -70,8 +73,13 @@ public class CreateBit extends AppCompatActivity {
                     startActivity(intent);
 
                 }catch (Exception e){
+                    /* Will execute if any one field is left empty */
                     Log.e("CreateBit onClick FAB", "Invalid values entered in fields");
-                    Toast.makeText(getBaseContext(), "Invalid entries", Toast.LENGTH_LONG).show();
+                    if(toast != null){
+                        toast.cancel();
+                    }
+                    toast = Toast.makeText(getBaseContext(), "Invalid entries", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             }
         });
