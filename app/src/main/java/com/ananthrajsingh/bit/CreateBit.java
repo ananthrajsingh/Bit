@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,11 +38,14 @@ public class CreateBit extends AppCompatActivity {
             /* We will get the information in EditText fields and pass to database*/
             @Override
             public void onClick(View v) {
-                editTextName = (EditText) findViewById(R.id.editTextName);
-                String nameOfHabit = editTextName.getText().toString();
-                editTextMaxCount = (EditText) findViewById(R.id.editTextFrequency);
-                String maximumFrequencyString = editTextMaxCount.getText().toString();
-                int maximumFrequency = Integer.parseInt(maximumFrequencyString);
+                try {
+                    editTextName = (EditText) findViewById(R.id.editTextName);
+
+                    editTextMaxCount = (EditText) findViewById(R.id.editTextFrequency);
+                    String nameOfHabit = editTextName.getText().toString();
+                    String maximumFrequencyString = editTextMaxCount.getText().toString();
+                    int maximumFrequency = Integer.parseInt(maximumFrequencyString);
+
                 /*
                 ---------------------------------------------------------------------
                 Database insertion process going on below
@@ -50,14 +54,24 @@ public class CreateBit extends AppCompatActivity {
                 /*
                  * We are inserting new row into the main table
                  */
-                ContentValues values = makeContentValuesToInsert(nameOfHabit, bitId, maximumFrequency);
-                Uri uriToMainTable = buildUriToMainTable();
-                Uri returnedUri = getContentResolver().insert(uriToMainTable, values);
-                //Check is insertion was successful
-                if (returnedUri != null)
-                    Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
-                else {
-                    Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
+
+
+
+                    ContentValues values = makeContentValuesToInsert(nameOfHabit, bitId, maximumFrequency);
+                    Uri uriToMainTable = buildUriToMainTable();
+                    Uri returnedUri = getContentResolver().insert(uriToMainTable, values);
+                    //Check is insertion was successful
+                    if (returnedUri != null)
+                        Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
+                    else {
+                        Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
+                    }
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(intent);
+
+                }catch (Exception e){
+                    Log.e("CreateBit onClick FAB", "Invalid values entered in fields");
+                    Toast.makeText(getBaseContext(), "Invalid entries", Toast.LENGTH_LONG).show();
                 }
             }
         });
