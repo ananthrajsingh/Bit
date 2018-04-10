@@ -116,6 +116,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    /**
+     * This function is called when the loading is finished.
+     *
+     * This function will transfer the loaded data to BitAdapter object. BitAdapter will
+     * create and bind views with the data that cursor represents. BitAdapter knows where
+     * to layout the data.
+     *
+     * @param loader the loader that has finished loading
+     * @param data data which was loaded by loader
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
