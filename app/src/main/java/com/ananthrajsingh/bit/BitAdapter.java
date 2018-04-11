@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
@@ -63,15 +63,27 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          */
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Item touched at position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-            /*
-             * This tag was set in onBindViewHolder(..). This will be passed to BitDetail
-             * activity as we want to get access to the row of touched item in Main table
-             */
-            Long idOfItem = (Long) v.getTag();
-            Intent intent = new Intent(v.getContext(), BitDetail.class);
-            intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
-            v.getContext().startActivity(intent);
+//            Toast.makeText(v.getContext(), "Item touched at position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+//            /*
+//             * This tag was set in onBindViewHolder(..). This will be passed to BitDetail
+//             * activity as we want to get access to the row of touched item in Main table
+//             */
+////            long idOfItem = (Long) v.getTag();
+////            Log.e("BitAdapter onClick", "idOfItem from tag - " + idOfItem);
+////            Intent intent = new Intent(v.getContext(), BitDetail.class);
+////            intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
+////            v.getContext().startActivity(intent);
+//
+//            if (v.getId() == R.id.list_item_textview){
+//                long idOfItem = (Long) v.getTag();
+//                Intent intent = new Intent(v.getContext(), BitDetail.class);
+//                intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
+//                v.getContext().startActivity(intent);
+//
+//            }
+//            else {
+//                throw new NullPointerException("Oops !!!!");
+//            }
 
         }
 
@@ -128,9 +140,18 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          * an item is deleted, then position and id will mismatch. To solve this we will add
          * a tag to every item of its corresponding id represented in the Main table
          */
-        Long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
+        final long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
+        Log.e("onBindViewHolder", "Id providing in tag - " + id);
         holder.mainTextView.setText(name);
-        holder.mainTextView.setTag(id);
+//        holder.mainTextView.setTag(id);
+        holder.mainTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), BitDetail.class);
+                intent.putExtra(v.getContext().getString(R.string.item_id_extra), id);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     /**
