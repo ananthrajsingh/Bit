@@ -34,10 +34,16 @@ public class DatabaseUtils {
      * @return uri to main table
      */
     public static Uri buildUriToMainTable() {
-//        return BitContract.BASE_CONTENT_URI.buildUpon().appendPath(BitContract.PATH_MAIN_TABLE).build();
-        Uri returnUri = Uri.withAppendedPath(BitContract.BASE_CONTENT_URI, BitContract.PATH_MAIN_TABLE);
-        return returnUri;
+        return Uri.withAppendedPath(BitContract.BASE_CONTENT_URI, BitContract.PATH_MAIN_TABLE);
     }
+
+    /**
+     * We may want a Uri to main table with _ID attached. And guess what? Yes we do!
+     * We need this for deleting an entry, so here we are, overloading functions.
+     *
+     * @param id this will be attached to content://com.ananthrajsingh.bit/main/
+     * @return Uri with passed id attached to main table uri
+     */
     public static Uri buildUriToMainTable(long id){
         Uri uri = buildUriToMainTable();
         return Uri.withAppendedPath(uri, String.valueOf(id));

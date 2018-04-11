@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,58 +34,22 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
      * for RecyclerViews. findViewById() calls are quiet expensive. Therefore
      * ViewHolder objects are created. These are recycled with new values without
      * findVIewById() calls. It's also a convenient place to set an
-     * OnClickListener, since it has access to the adapter and the views.
+     * OnClickListener, since it has access to the adapter and the views. OH WAIT!
+     * where is OnClickListener? We removed it, and shifted that to onBindViewHolder(..)
+     * Say Hi! to him there. Actually, we had a hard time dealing with getTag() and
+     * setTag(), which were necessary if we implemented here. We needed _ID of course.
+     * That didn't worked out. So here we are letting you read such long paragraph.
      */
-    class BitAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class BitAdapterViewHolder extends RecyclerView.ViewHolder{
 
         /* Currently we have only one textview in our list_item */
+        // TODO: We'll be back here soon
         TextView mainTextView;
 
         public BitAdapterViewHolder(View itemView) {
             super(itemView);
             mainTextView = (TextView) itemView.findViewById(R.id.list_item_textview);
-
-            /* we have to pass in a OnClickListner object, since this class extends from it,
-             we pass "this"
-             */
-            itemView.setOnClickListener(this);
         }
-
-        /**
-         * This method is called when we click on a View when our views are displayed.
-         * We will have to open a new activity. That new activity will display detailed
-         * view of that habit. Therefore we will need the _ID of that habit. Since we are
-         * not sorting our output list, getting adapter position will be used to move
-         * cursor to desired row/
-         *
-         * @param v view which was clicked
-         */
-        @Override
-        public void onClick(View v) {
-//            Toast.makeText(v.getContext(), "Item touched at position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//            /*
-//             * This tag was set in onBindViewHolder(..). This will be passed to BitDetail
-//             * activity as we want to get access to the row of touched item in Main table
-//             */
-////            long idOfItem = (Long) v.getTag();
-////            Log.e("BitAdapter onClick", "idOfItem from tag - " + idOfItem);
-////            Intent intent = new Intent(v.getContext(), BitDetail.class);
-////            intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
-////            v.getContext().startActivity(intent);
-//
-//            if (v.getId() == R.id.list_item_textview){
-//                long idOfItem = (Long) v.getTag();
-//                Intent intent = new Intent(v.getContext(), BitDetail.class);
-//                intent.putExtra(v.getContext().getString(R.string.item_id_extra), idOfItem);
-//                v.getContext().startActivity(intent);
-//
-//            }
-//            else {
-//                throw new NullPointerException("Oops !!!!");
-//            }
-
-        }
-
     }
 
     /**
@@ -141,9 +104,13 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          * a tag to every item of its corresponding id represented in the Main table
          */
         final long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
-        Log.e("onBindViewHolder", "Id providing in tag - " + id);
         holder.mainTextView.setText(name);
-//        holder.mainTextView.setTag(id);
+        /*
+         * Works well, though there are more options, we're sticking to this. Click on
+         * RecyclerView item is dealt here. All it has to do is take us to BitDetail
+         * activity with the _ID of touched item. Rest is dealt there. We'll figure
+         * out everything with _ID, primary key? heard before?
+         */
         holder.mainTextView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
