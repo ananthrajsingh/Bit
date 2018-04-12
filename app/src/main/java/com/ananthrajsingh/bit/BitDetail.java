@@ -23,6 +23,7 @@ public class BitDetail extends AppCompatActivity {
 
 //    public TextView bitCountTextView;
     public Button plusOneButton;
+    public TextView bitCountTextView;
     public long idOfHabit;
 
     @Override
@@ -31,20 +32,40 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
-        final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
-        bitCountTextView.setText("-1");
+
+        final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+
+        /*
+         * When we get to this activity, correct count is displayed initially, this is taken
+         * care by this if else segment
+         */
+
+        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+
+        /*
+        ------------------------------------------------------------------------------------
+         * This code below is temporary so documentation is skipped here
+         */
+        Cursor initialCursor = getCursorForFreqTable(freqTableUri);
+        initialCursor.moveToLast();
+        if(initialCursor.getCount() != 0) {
+            int freq = initialCursor.getInt(initialCursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+            bitCountTextView.setText(Integer.toString(freq));
+            initialCursor.close();
+        }
+        else{
+            bitCountTextView.setText("0");
+
+        }
+
+
         plusOneButton = (Button) findViewById(R.id.button);
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
                 Log.e("BitDetail.java" ,"Uri to frequency table - " + freqTableUri);
-                Cursor cursor = getContentResolver().query(freqTableUri,
-                        null,
-                        null,
-                        null,
-                        null);
+                Cursor cursor = getCursorForFreqTable(freqTableUri);
                 cursor.moveToLast();
                 Log.e("BitDetail.java" , "Cursor of id " + idOfHabit + " has count " +cursor.getCount()
                 + " and position is " + cursor.getPosition());
@@ -70,9 +91,9 @@ public class BitDetail extends AppCompatActivity {
                     cursor.moveToLast();
                     Log.e("BitDetail.java", "cursor position " + cursor.getPosition() );
 
-                        int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-                        Log.e("BitDetail.java" , "todays freq of this habit is - " + freq);
-                        bitCountTextView.setText(Integer.toString(freq));
+                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+                    Log.e("BitDetail.java" , "todays freq of this habit is - " + freq);
+                    bitCountTextView.setText(Integer.toString(freq));
                     int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
 
                 }
@@ -127,5 +148,14 @@ public class BitDetail extends AppCompatActivity {
          * other fragmnts until the action is consumed.
          */
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private Cursor getCursorForFreqTable(Uri uri){
+        return getContentResolver().query(uri,
+                null,
+                null,
+                null,
+                null);
     }
 }

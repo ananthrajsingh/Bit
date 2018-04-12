@@ -239,18 +239,20 @@ public class BitProvider extends ContentProvider {
      *  1.) Show all habits in recycler view
      *  2.) Show a detailed view of a particular habit
      *  3.) Check whether today's row exists
+     *  UPDATE
+     *  4.) Get whole of Frequency table for detailed view
      *
      *  For (3), Uri will have the table's name whose Frequency table is to be checked for today's row.
      *  We will query its corresponding Frequency table, two cases arise-
      *      A) Row is found, then in update(..) we will increment bit
      *      B) Row is not found, then in insert(..) we will add new row
      *
-     * @param uri
-     * @param projection
-     * @param selection
-     * @param selectionArgs
-     * @param sortOrder
-     * @return
+     * @param uri this will tell which table and row to deal with
+     * @param projection columns we are interested in, null here
+     * @param selection null again
+     * @param selectionArgs you guessed it, null. Actually, uri itself is sufficient
+     * @param sortOrder no order yet, so yup, null.
+     * @return cursor pointing to desired row(s)
      */
     @Nullable
     @Override
@@ -301,6 +303,10 @@ public class BitProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
+            /*
+             * We'll be needing whole of frequency table in cursor when we display detailed view
+             * of that habit. This is added later, how the hell I missed this case!
+             */
             case CODE_FREQUENCY:
                 String frequencyTableName = uri.getLastPathSegment();
                 cursor = mOpenHelper.getReadableDatabase().query(frequencyTableName,
@@ -346,6 +352,9 @@ public class BitProvider extends ContentProvider {
              * the row.
              */
         Cursor cursor = query(uri, null, null, null, null);
+        /*
+         * cursor will consist of single row, therefore we'll move it to position 0
+         */
         cursor.moveToPosition(0);
             /* Extract current frequency */
         int oldFrequency = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));

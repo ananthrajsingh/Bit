@@ -28,7 +28,6 @@ public class FrequencyUtils {
      * @return true to signify that this function ran successfully
      */
     public static boolean  makeFrequencyTable(long idToAppend, BitDbHelper databaseHelper){
-        Log.e("FrequencyUtils.java", "We are going to make frequency table with id = " + idToAppend);
 
         int idInInt = (int) idToAppend;
         String idString = Integer.toString(idInInt);
@@ -42,7 +41,6 @@ public class FrequencyUtils {
 
                 BitContract.FrequencTableEntry.COLUMN_DATE +  " TEXT);";
 
-        Log.e("FrequencyUtils.java", "FREQUENCY TABLE STATEMENT = " + FREQUENCY_TABLE_STATEMENT);
 
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         database.execSQL(FREQUENCY_TABLE_STATEMENT);
@@ -74,10 +72,18 @@ public class FrequencyUtils {
                 build();
     }
 
+
+    /**
+     * Pass in the uri and get last segment extracted as string
+     *
+     * @param uri uri from which name to be extracted
+     * @return extracted segment
+     */
     public static String getTableNameFromUri(Uri uri){
 
         return uri.getLastPathSegment();
     }
+
     public static String getTableNameFromUriWithDate(Uri uri){
         /*
          * This will return the path segment at provided index. For example

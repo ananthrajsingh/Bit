@@ -51,6 +51,13 @@ public class DatabaseUtils {
         return Uri.withAppendedPath(uri, String.valueOf(id));
     }
 
+    /**
+     * Helper method to build Uri in order to do increment and creation task on an entry in
+     * frequency table. Evidently, we'll be only giving option to update current day's bit.
+     * therefore we are dealing with getTodaysDate()
+     * @param id this will help take us to right frequency table.
+     * @return function name is self-explanatory about what we are returning.
+     */
     public static Uri buildUriToFreqTableWithDate(long id){
         Uri returnUri = Uri.withAppendedPath(BitContract.BASE_CONTENT_URI,
                 BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
@@ -59,6 +66,12 @@ public class DatabaseUtils {
         return returnUri;
     }
 
+    /**
+     * When we have to get all rows of a particular frequency table, we'll need this function to
+     * build Uri.
+     * @param id this will help determining which frequency table we are dealing with
+     * @return Uri to frequency table with provided id
+     */
     public static Uri buildUriToFreqTable(long id){
          return Uri.withAppendedPath(BitContract.BASE_CONTENT_URI,
                 BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
