@@ -202,7 +202,7 @@ public class BitProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("The uri turned out to be INVALID");
+                throw new UnsupportedOperationException("The uri for insertion turned out to be INVALID");
         }
 
         return returnUri;
@@ -300,6 +300,16 @@ public class BitProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            case CODE_FREQUENCY:
+                String frequencyTableName = uri.getLastPathSegment();
+                cursor = mOpenHelper.getReadableDatabase().query(frequencyTableName,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Query cannot be completed, cuz unknown Uri - " + uri);

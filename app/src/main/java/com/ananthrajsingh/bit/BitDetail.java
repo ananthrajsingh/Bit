@@ -5,13 +5,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.ananthrajsingh.bit.data.BitContract;
 
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
@@ -36,7 +37,6 @@ public class BitDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
-                Log.e("BitDetail, Button click" ,"uri with date as returned by utility fn - " + freqTableUri);
                 Cursor cursor = getContentResolver().query(freqTableUri,
                         null,
                         null,
@@ -45,15 +45,18 @@ public class BitDetail extends AppCompatActivity {
                 if (cursor == null){
                     Uri uri = buildUriToFreqTable(idOfHabit);
                     Uri returnedUri = getContentResolver().insert(uri, null);
-                    Log.e("BitDetail.java" , "uri after date row insertion - " + returnedUri);
                     if (returnedUri != null){
                         int numberOfRowsAffected = getContentResolver().update(freqTableUri,
                                 null,
                                 null,
                                 null);
-                        Log.e("BitDetail.java", "number of rows updated - " + numberOfRowsAffected);
+                        bitCountTextView.setText("1");
                     }
                     cursor.close();
+                }
+                else{
+                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+                    bitCountTextView.setText(freq);
                 }
             }
         });

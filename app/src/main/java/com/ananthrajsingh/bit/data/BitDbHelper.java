@@ -59,7 +59,6 @@ public class BitDbHelper extends SQLiteOpenHelper {
                                 BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT + " INTEGER NOT NULL" +
 
                                 ");";
-        Log.e("BitDbHelper.java" ,"MAIN TABLE STATEMENT = " + SQL_CREATE_MAIN_TABLE);
         /*
          * execSQL(..) is used to execute any SQL statement.
          * Though it is advised to use insert(), update() etc where ever possible.
