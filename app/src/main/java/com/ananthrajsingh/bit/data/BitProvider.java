@@ -346,6 +346,7 @@ public class BitProvider extends ContentProvider {
              * the row.
              */
         Cursor cursor = query(uri, null, null, null, null);
+        cursor.moveToPosition(0);
             /* Extract current frequency */
         int oldFrequency = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
         long id = cursor.getLong(cursor.getColumnIndex(BitContract.FrequencTableEntry._ID));

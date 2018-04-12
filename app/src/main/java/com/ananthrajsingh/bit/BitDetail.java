@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable
 
 public class BitDetail extends AppCompatActivity {
 
-    public TextView bitCountTextView;
+//    public TextView bitCountTextView;
     public Button plusOneButton;
     public long idOfHabit;
 
@@ -30,33 +31,50 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
-        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+        final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+        bitCountTextView.setText("-1");
         plusOneButton = (Button) findViewById(R.id.button);
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+                Log.e("BitDetail.java" ,"Uri to frequency table - " + freqTableUri);
                 Cursor cursor = getContentResolver().query(freqTableUri,
                         null,
                         null,
                         null,
                         null);
-                if (cursor == null){
+                cursor.moveToLast();
+                Log.e("BitDetail.java" , "Cursor of id " + idOfHabit + " has count " +cursor.getCount()
+                + " and position is " + cursor.getPosition());
+
+                if (cursor.getCount() == 0){
+                    cursor.close();
                     Uri uri = buildUriToFreqTable(idOfHabit);
                     Uri returnedUri = getContentResolver().insert(uri, null);
+                    Log.e("BitDetail.java", "returnedUri after making new row for today- "+ returnedUri);
                     if (returnedUri != null){
                         int numberOfRowsAffected = getContentResolver().update(freqTableUri,
                                 null,
                                 null,
                                 null);
+                        Log.e("BitDetail.java", "number of rows updated on incrementation just after creation - "
+                                + numberOfRowsAffected);
                         bitCountTextView.setText("1");
+
                     }
-                    cursor.close();
+
                 }
                 else{
-                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-                    bitCountTextView.setText(freq);
+                    cursor.moveToLast();
+                    Log.e("BitDetail.java", "cursor position " + cursor.getPosition() );
+
+                        int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+                        Log.e("BitDetail.java" , "todays freq of this habit is - " + freq);
+                        bitCountTextView.setText(Integer.toString(freq));
+                    int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
+
                 }
             }
         });

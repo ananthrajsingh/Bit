@@ -70,7 +70,7 @@ public class FrequencyUtils {
         long id = database.insert(tableName, null, values);
         /* This is expected to return something like content://com.ananthrajsingh/bit/12 */
         return uri.buildUpon().
-                appendPath(Long.toString(id)).
+                appendPath(getTodaysDate()).
                 build();
     }
 
