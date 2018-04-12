@@ -15,7 +15,7 @@ public class TimeUtils {
     public static String getTodaysDate(){
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        SimpleDateFormat formatType = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat formatType = new SimpleDateFormat("MM-dd-yyyy");
         return formatType.format(calendar.getTime());
     }
 

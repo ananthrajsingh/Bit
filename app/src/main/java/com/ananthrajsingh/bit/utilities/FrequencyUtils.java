@@ -3,6 +3,7 @@ package com.ananthrajsingh.bit.utilities;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.ananthrajsingh.bit.data.BitContract;
 import com.ananthrajsingh.bit.data.BitDbHelper;
@@ -27,17 +28,25 @@ public class FrequencyUtils {
      * @return true to signify that this function ran successfully
      */
     public static boolean  makeFrequencyTable(long idToAppend, BitDbHelper databaseHelper){
+        Log.e("FrequencyUtils.java", "We are going to make frequency table with id = " + idToAppend);
 
         int idInInt = (int) idToAppend;
         String idString = Integer.toString(idInInt);
         String FREQUENCY_TABLE_STATEMENT = "CREATE TABLE " +
+
                 BitContract.FrequencTableEntry.TABLE_BASE_NAME + idString + " (" +
-                BitContract.FrequencTableEntry._ID + " INTEGER PRIMARY KEY,  " +
+
+                BitContract.FrequencTableEntry._ID + " INTEGER PRIMARY KEY, " +
+
                 BitContract.FrequencTableEntry.COLUMN_FREQUENCY + " INTEGER, " +
-                BitContract.FrequencTableEntry.COLUMN_DATE +  "TEXT)";
+
+                BitContract.FrequencTableEntry.COLUMN_DATE +  " TEXT);";
+
+        Log.e("FrequencyUtils.java", "FREQUENCY TABLE STATEMENT = " + FREQUENCY_TABLE_STATEMENT);
 
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         database.execSQL(FREQUENCY_TABLE_STATEMENT);
+        Log.e("FrequencyUtils.java", "Hopefully table made");
         return true;
     }
 
