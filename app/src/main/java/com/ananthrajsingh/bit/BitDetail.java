@@ -1,17 +1,26 @@
 package com.ananthrajsingh.bit;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
+import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 
 public class BitDetail extends AppCompatActivity {
 
+    public TextView bitCountTextView;
+    public Button plusOneButton;
     public long idOfHabit;
 
     @Override
@@ -20,6 +29,34 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
+        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+        plusOneButton = (Button) findViewById(R.id.button);
+
+        plusOneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+                Log.e("BitDetail, Button click" ,"uri with date as returned by utility fn - " + freqTableUri);
+                Cursor cursor = getContentResolver().query(freqTableUri,
+                        null,
+                        null,
+                        null,
+                        null);
+                if (cursor == null){
+                    Uri uri = buildUriToFreqTable(idOfHabit);
+                    Uri returnedUri = getContentResolver().insert(uri, null);
+                    Log.e("BitDetail.java" , "uri after date row insertion - " + returnedUri);
+                    if (returnedUri != null){
+                        int numberOfRowsAffected = getContentResolver().update(freqTableUri,
+                                null,
+                                null,
+                                null);
+                        Log.e("BitDetail.java", "number of rows updated - " + numberOfRowsAffected);
+                    }
+                    cursor.close();
+                }
+            }
+        });
 
     }
 

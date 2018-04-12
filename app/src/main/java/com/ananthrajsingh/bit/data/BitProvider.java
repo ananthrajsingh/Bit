@@ -286,6 +286,7 @@ public class BitProvider extends ContentProvider {
             case CODE_FREQUENCY_WITH_DATE:
                 String dateOfHabitBit = uri.getLastPathSegment();
 
+                // This is the format of date "MM/dd/yyyy"
                 String[] selectionArgumentsDate = {dateOfHabitBit};
 
                 String tableName = getTableNameFromUriWithDate(uri);

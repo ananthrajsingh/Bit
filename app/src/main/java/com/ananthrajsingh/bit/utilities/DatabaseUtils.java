@@ -5,6 +5,8 @@ import android.net.Uri;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
+
 /**
  * Created by Ananth on 4/9/2018.
  */
@@ -47,6 +49,19 @@ public class DatabaseUtils {
     public static Uri buildUriToMainTable(long id){
         Uri uri = buildUriToMainTable();
         return Uri.withAppendedPath(uri, String.valueOf(id));
+    }
+
+    public static Uri buildUriToFreqTableWithDate(long id){
+        Uri returnUri = Uri.withAppendedPath(BitContract.BASE_CONTENT_URI,
+                BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
+        returnUri = Uri.withAppendedPath(returnUri, getTodaysDate());
+
+        return returnUri;
+    }
+
+    public static Uri buildUriToFreqTable(long id){
+         return Uri.withAppendedPath(BitContract.BASE_CONTENT_URI,
+                BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
     }
 
 }
