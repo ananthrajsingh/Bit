@@ -32,6 +32,7 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
+        final Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
 
         final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
 
@@ -99,6 +100,21 @@ public class BitDetail extends AppCompatActivity {
                 }
             }
         });
+
+
+        /*
+        ------------------------------------------------------------------------------------------
+        Updating circles
+         */
+//        View includedMonthlyInfo = findViewById(R.id.monthly_info);
+//        TextView bitTextView;
+//        Cursor cursor = getCursorForFreqTable(uriToFreqTable);
+//        int count = 0;
+//        while(cursor.moveToNext()){
+//            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+//            bitTextView = (TextView)includedMonthlyInfo.findViewById(daysResourceId[count++]);
+//            bitTextView.setText(Integer.toString(freq));
+//        }
 
     }
 
