@@ -32,44 +32,23 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
-        final Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
-
-        final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
-
-        /*
-         * When we get to this activity, correct count is displayed initially, this is taken
-         * care by this if else segment
-         */
-
-        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
-
-        /*
-        ------------------------------------------------------------------------------------
-         * This code below is temporary so documentation is skipped here
-         */
-        Cursor initialCursor = getCursorForFreqTable(freqTableUri);
-        initialCursor.moveToLast();
-        if(initialCursor.getCount() != 0) {
-            int freq = initialCursor.getInt(initialCursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-            bitCountTextView.setText(Integer.toString(freq));
-            initialCursor.close();
-        }
-        else{
-            bitCountTextView.setText("0");
-
-        }
-
-
+        final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+        bitCountTextView.setText("-1");
         plusOneButton = (Button) findViewById(R.id.button);
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
                 Log.e("BitDetail.java" ,"Uri to frequency table - " + freqTableUri);
-                Cursor cursor = getCursorForFreqTable(freqTableUri);
+                Cursor cursor = getContentResolver().query(freqTableUri,
+                        null,
+                        null,
+                        null,
+                        null);
                 cursor.moveToLast();
                 Log.e("BitDetail.java" , "Cursor of id " + idOfHabit + " has count " +cursor.getCount()
-                + " and position is " + cursor.getPosition());
+                        + " and position is " + cursor.getPosition());
 
                 if (cursor.getCount() == 0){
                     cursor.close();
@@ -100,21 +79,6 @@ public class BitDetail extends AppCompatActivity {
                 }
             }
         });
-
-
-        /*
-        ------------------------------------------------------------------------------------------
-        Updating circles
-         */
-//        View includedMonthlyInfo = findViewById(R.id.monthly_info);
-//        TextView bitTextView;
-//        Cursor cursor = getCursorForFreqTable(uriToFreqTable);
-//        int count = 0;
-//        while(cursor.moveToNext()){
-//            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-//            bitTextView = (TextView)includedMonthlyInfo.findViewById(daysResourceId[count++]);
-//            bitTextView.setText(Integer.toString(freq));
-//        }
 
     }
 
