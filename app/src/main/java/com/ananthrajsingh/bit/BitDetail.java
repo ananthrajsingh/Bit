@@ -15,9 +15,13 @@ import android.widget.TextView;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
+import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
+import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.colorGreen;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.colorRed;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 
 public class BitDetail extends AppCompatActivity {
@@ -26,6 +30,7 @@ public class BitDetail extends AppCompatActivity {
     public Button plusOneButton;
     public TextView bitCountTextView;
     public long idOfHabit;
+    public int bitType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
+        bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
         Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
         final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
         bitCountTextView.setText("-1");
@@ -96,6 +102,8 @@ public class BitDetail extends AppCompatActivity {
             cursor.moveToPosition(i);
             tableTV = (TextView) findViewById(daysResourceId[index++]);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+            int color = getColorGradient(freq, bitType);
+            tableTV.setBackgroundColor(color);
             tableTV.setText(Integer.toString(freq));
 
         }
@@ -157,5 +165,41 @@ public class BitDetail extends AppCompatActivity {
                 null,
                 null,
                 null);
+    }
+
+    private int getColorGradient(int frequency, int habitType) {
+        int retColor = R.color.white;
+        if (habitType == BAD_BIT_ID) {
+            if (frequency == 0) {
+                retColor = R.color.white;
+            } else if (frequency > 0 && frequency <= 1) {
+                retColor = colorRed[0];
+            } else if (frequency > 1 && frequency <= 3) {
+                retColor = colorRed[1];
+            } else if (frequency > 3 && frequency <= 7) {
+                retColor = colorRed[2];
+            } else if (frequency > 7 && frequency <= 13) {
+                retColor = colorRed[3];
+            } else {
+                retColor = colorRed[4];
+            }
+        }
+
+        if (habitType == GOOD_BIT_ID) {
+            if (frequency == 0) {
+                retColor = R.color.white;
+            } else if (frequency > 0 && frequency <= 1) {
+                retColor = colorGreen[0];
+            } else if (frequency > 1 && frequency <= 3) {
+                retColor = colorGreen[1];
+            } else if (frequency > 3 && frequency <= 7) {
+                retColor = colorGreen[2];
+            } else if (frequency > 7 && frequency <= 13) {
+                retColor = colorGreen[3];
+            } else {
+                retColor = colorGreen[4];
+            }
+        }
+        return retColor;
     }
 }

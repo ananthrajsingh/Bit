@@ -5,6 +5,7 @@
 
     <string name="bit_id_extra">bit_id</string>
     <string name="item_id_extra">item_id</string>
+    <string name="item_type_extra">item_type</string>
 
     <string name="action_delete">Delete</string>
 

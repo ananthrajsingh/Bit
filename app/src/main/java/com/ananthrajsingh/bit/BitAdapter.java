@@ -104,6 +104,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          * a tag to every item of its corresponding id represented in the Main table
          */
         final long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
+        final int habitType = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_BIT_TYPE));
         holder.mainTextView.setText(name);
         /*
          * Works well, though there are more options, we're sticking to this. Click on
@@ -116,6 +117,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), BitDetail.class);
                 intent.putExtra(v.getContext().getString(R.string.item_id_extra), id);
+                intent.putExtra(v.getContext().getString(R.string.item_type_extra), habitType);
                 v.getContext().startActivity(intent);
             }
         });

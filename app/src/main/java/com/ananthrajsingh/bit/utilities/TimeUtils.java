@@ -21,6 +21,14 @@ public class TimeUtils {
             , R.id.bitTV_30, R.id.bitTV_31, R.id.bitTV_32, R.id.bitTV_33, R.id.bitTV_34, R.id.bitTV_35, R.id.bitTV_36
     };
 
+    public static final int[] colorGreen = {
+            R.color.green1, R.color.green2, R.color.green3, R.color.green4, R.color.green5
+    };
+
+    public static final int[] colorRed = {
+            R.color.red1, R.color.red2, R.color.red3, R.color.red4, R.color.red5
+    };
+
     public static String getTodaysDate(){
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
