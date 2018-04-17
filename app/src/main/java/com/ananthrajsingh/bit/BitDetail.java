@@ -18,6 +18,7 @@ import com.ananthrajsingh.bit.data.BitContract;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 
 public class BitDetail extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class BitDetail extends AppCompatActivity {
         setContentView(R.layout.activity_bit_detail);
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
+        Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
         final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
         bitCountTextView.setText("-1");
         plusOneButton = (Button) findViewById(R.id.button);
@@ -79,6 +81,24 @@ public class BitDetail extends AppCompatActivity {
                 }
             }
         });
+
+        /*
+        ---------------------------------------------------------------------------------------------------------------
+        adding data to table
+         */
+        TextView tableTV;
+        Cursor cursor = getCursorForFreqTable(uriToFreqTable);
+        int i = cursor.getCount();
+        int index = 0;
+        while(i > 0){
+            Log.e("BitDetail.java" , "In while loop with value of i = " + i);
+            i--;
+            cursor.moveToPosition(i);
+            tableTV = (TextView) findViewById(daysResourceId[index++]);
+            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+            tableTV.setText(Integer.toString(freq));
+
+        }
 
     }
 
