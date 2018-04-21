@@ -36,9 +36,15 @@ public class BitDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bit_detail);
+
+
+        /* getting information about which item was clicked */
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
         bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
+
+
+        /*Reference to the table of clicked item */
         Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
         final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
         bitCountTextView.setText("-1");
@@ -48,41 +54,24 @@ public class BitDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
-                Log.e("BitDetail.java" ,"Uri to frequency table - " + freqTableUri);
                 Cursor cursor = getContentResolver().query(freqTableUri,
                         null,
                         null,
                         null,
                         null);
                 cursor.moveToLast();
-                Log.e("BitDetail.java" , "Cursor of id " + idOfHabit + " has count " +cursor.getCount()
-                        + " and position is " + cursor.getPosition());
 
+                /* Is there today's row? */
                 if (cursor.getCount() == 0){
                     cursor.close();
-                    Uri uri = buildUriToFreqTable(idOfHabit);
-                    Uri returnedUri = getContentResolver().insert(uri, null);
-                    Log.e("BitDetail.java", "returnedUri after making new row for today- "+ returnedUri);
-                    if (returnedUri != null){
-                        int numberOfRowsAffected = getContentResolver().update(freqTableUri,
-                                null,
-                                null,
-                                null);
-                        Log.e("BitDetail.java", "number of rows updated on incrementation just after creation - "
-                                + numberOfRowsAffected);
-                        bitCountTextView.setText("1");
-
-                    }
-
+                    addTodaysRow();
                 }
+                /*Yes, there is row, so just increment the count */
                 else{
-                    cursor.moveToLast();
-                    Log.e("BitDetail.java", "cursor position " + cursor.getPosition() );
-
-                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-                    Log.e("BitDetail.java" , "todays freq of this habit is - " + freq);
-                    bitCountTextView.setText(Integer.toString(freq));
                     int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
+                    cursor.moveToLast();
+                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY)) + 1;
+                    bitCountTextView.setText(Integer.toString(freq));
 
                 }
             }
@@ -102,8 +91,8 @@ public class BitDetail extends AppCompatActivity {
             cursor.moveToPosition(i);
             tableTV = (TextView) findViewById(daysResourceId[index++]);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-            int color = getColorGradient(freq, bitType);
-            tableTV.setBackgroundColor(color);
+//            int color = getColorGradient(freq, bitType);
+//            tableTV.setBackgroundColor(color);
             tableTV.setText(Integer.toString(freq));
 
         }
@@ -201,5 +190,23 @@ public class BitDetail extends AppCompatActivity {
             }
         }
         return retColor;
+    }
+
+    private void addTodaysRow(){
+
+        Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+        Uri uri = buildUriToFreqTable(idOfHabit);
+
+                    /* This will insert a new row for today's entry, since we figured out that there is no today's row */
+        Uri returnedUri = getContentResolver().insert(uri, null);
+        if (returnedUri != null){
+            int numberOfRowsAffected = getContentResolver().update(freqTableUri,
+                    null,
+                    null,
+                    null);
+
+            bitCountTextView.setText("1");
+
+        }
     }
 }
