@@ -142,7 +142,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDays">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/bitTV_00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

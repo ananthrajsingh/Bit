@@ -1,11 +1,11 @@
 package com.ananthrajsingh.bit;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -86,13 +86,12 @@ public class BitDetail extends AppCompatActivity {
         int i = cursor.getCount();
         int index = 0;
         while(i > 0){
-            Log.e("BitDetail.java" , "In while loop with value of i = " + i);
             i--;
             cursor.moveToPosition(i);
             tableTV = (TextView) findViewById(daysResourceId[index++]);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-//            int color = getColorGradient(freq, bitType);
-//            tableTV.setBackgroundColor(color);
+            int color = getColorGradient(freq, bitType);
+            tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
             tableTV.setText(Integer.toString(freq));
 
         }
