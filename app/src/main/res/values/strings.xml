@@ -16,4 +16,10 @@
     <string name="thursday">T</string>
     <string name="friday">F</string>
     <string name="saturday">S</string>
+
+    <string name="edittext_name_hint">Enter Name</string>
+    <string name="edittext_frequency_hint">Enter Frequency</string>
+    <string name="radio_good">Good</string>
+    <string name="radio_bad">Bad</string>
+    <string name="habit_type_textview">Habit Type</string>
 </resources>

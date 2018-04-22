@@ -85,7 +85,7 @@ public class BitDetail extends AppCompatActivity {
                 else{
                     int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
                     cursor.moveToLast();
-                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY)) + 1;
                     bitCountTextView.setText(Integer.toString(freq));
 
                 }
@@ -252,7 +252,7 @@ public class BitDetail extends AppCompatActivity {
             int color = getColorGradient(freq, bitType);
             tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
             prevDate = currentDate;
-            tableTV.setText(Integer.toString(freq));
+//            tableTV.setText(Integer.toString(freq));
 
         }
 
