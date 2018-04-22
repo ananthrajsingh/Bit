@@ -83,11 +83,18 @@ public class BitDetail extends AppCompatActivity {
         adding data to table
          */
         TextView tableTV;
+        String currentDate;
+        String prevDate = null;
         Cursor cursor = getCursorForFreqTable(uriToFreqTable);
         int i = cursor.getCount();
-        cursor.moveToPosition(i-1);
-        String currentDate;
-        String prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+        /*
+         * This if case will take care of case when new Bit is created and this activity is opened
+         * for the first time.
+         */
+        if (cursor.getCount() != 0) {
+            cursor.moveToPosition(i - 1);
+            prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+        }
         int index = todaysDayOffset();
         while(i > 0){
             i--;
