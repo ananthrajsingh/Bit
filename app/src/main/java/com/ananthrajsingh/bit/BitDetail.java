@@ -5,7 +5,9 @@ import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,8 +22,6 @@ import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
-import static com.ananthrajsingh.bit.utilities.TimeUtils.colorGreen;
-import static com.ananthrajsingh.bit.utilities.TimeUtils.colorRed;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 
 public class BitDetail extends AppCompatActivity {
@@ -46,7 +46,7 @@ public class BitDetail extends AppCompatActivity {
 
         /*Reference to the table of clicked item */
         Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
-        final TextView bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
+        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
         bitCountTextView.setText("-1");
         plusOneButton = (Button) findViewById(R.id.button);
 
@@ -70,7 +70,7 @@ public class BitDetail extends AppCompatActivity {
                 else{
                     int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
                     cursor.moveToLast();
-                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY)) + 1;
+                    int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
                     bitCountTextView.setText(Integer.toString(freq));
 
                 }
@@ -91,6 +91,8 @@ public class BitDetail extends AppCompatActivity {
             tableTV = (TextView) findViewById(daysResourceId[index++]);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
             int color = getColorGradient(freq, bitType);
+            Log.e("BitDetail.java", "We got color - " + color);
+            bitCountTextView.setBackgroundColor(color);
             tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
             tableTV.setText(Integer.toString(freq));
 
@@ -158,36 +160,71 @@ public class BitDetail extends AppCompatActivity {
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
+            Log.e("BitDetail.java", "We are in BAD_BIT_ID");
             if (frequency == 0) {
-                retColor = R.color.white;
+                retColor = ContextCompat.getColor(this, R.color.white);
             } else if (frequency > 0 && frequency <= 1) {
-                retColor = colorRed[0];
+                retColor = ContextCompat.getColor(this, R.color.red1);
             } else if (frequency > 1 && frequency <= 3) {
-                retColor = colorRed[1];
+                retColor = ContextCompat.getColor(this, R.color.red2);
             } else if (frequency > 3 && frequency <= 7) {
-                retColor = colorRed[2];
+                retColor = ContextCompat.getColor(this, R.color.red3);
             } else if (frequency > 7 && frequency <= 13) {
-                retColor = colorRed[3];
+                retColor = ContextCompat.getColor(this, R.color.red4);
             } else {
-                retColor = colorRed[4];
+                retColor = ContextCompat.getColor(this, R.color.red5);
             }
         }
 
         if (habitType == GOOD_BIT_ID) {
+            Log.e("BitDetail.java", "We are in GOOD_BIT_ID");
             if (frequency == 0) {
-                retColor = R.color.white;
+                retColor = ContextCompat.getColor(this, R.color.white);
             } else if (frequency > 0 && frequency <= 1) {
-                retColor = colorGreen[0];
+                retColor = ContextCompat.getColor(this, R.color.green1);
             } else if (frequency > 1 && frequency <= 3) {
-                retColor = colorGreen[1];
+                retColor = ContextCompat.getColor(this, R.color.green2);
             } else if (frequency > 3 && frequency <= 7) {
-                retColor = colorGreen[2];
+                retColor = ContextCompat.getColor(this, R.color.green3);
             } else if (frequency > 7 && frequency <= 13) {
-                retColor = colorGreen[3];
+                retColor = ContextCompat.getColor(this, R.color.green4);
             } else {
-                retColor = colorGreen[4];
+                retColor = ContextCompat.getColor(this, R.color.green5);
             }
         }
+
+//        int retColor = R.color.white;
+//        if (habitType == BAD_BIT_ID) {
+//            if (frequency == 0) {
+//                retColor = R.color.white;
+//            } else if (frequency > 0 && frequency <= 1) {
+//                retColor = colorRed[0];
+//            } else if (frequency > 1 && frequency <= 3) {
+//                retColor = colorRed[1];
+//            } else if (frequency > 3 && frequency <= 7) {
+//                retColor = colorRed[2];
+//            } else if (frequency > 7 && frequency <= 13) {
+//                retColor = colorRed[3];
+//            } else {
+//                retColor = colorRed[4];
+//            }
+//        }
+//
+//        if (habitType == GOOD_BIT_ID) {
+//            if (frequency == 0) {
+//                retColor = R.color.white;
+//            } else if (frequency > 0 && frequency <= 1) {
+//                retColor = colorGreen[0];
+//            } else if (frequency > 1 && frequency <= 3) {
+//                retColor = colorGreen[1];
+//            } else if (frequency > 3 && frequency <= 7) {
+//                retColor = colorGreen[2];
+//            } else if (frequency > 7 && frequency <= 13) {
+//                retColor = colorGreen[3];
+//            } else {
+//                retColor = colorGreen[4];
+//            }
+//        }
         return retColor;
     }
 
