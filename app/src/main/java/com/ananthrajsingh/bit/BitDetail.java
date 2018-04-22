@@ -22,6 +22,7 @@ import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
+import static com.ananthrajsingh.bit.utilities.DatabaseUtils.todaysDayOffset;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 
 public class BitDetail extends AppCompatActivity {
@@ -84,17 +85,21 @@ public class BitDetail extends AppCompatActivity {
         TextView tableTV;
         Cursor cursor = getCursorForFreqTable(uriToFreqTable);
         int i = cursor.getCount();
-        int index = 0;
+        cursor.moveToPosition(i-1);
+        String currentDate;
+        String prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+        int index = todaysDayOffset();
         while(i > 0){
             i--;
             cursor.moveToPosition(i);
-            tableTV = (TextView) findViewById(daysResourceId[index++]);
+            tableTV = (TextView) findViewById(daysResourceId[index]);
+            currentDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+            index = index + getDateDifference(currentDate, prevDate);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
             int color = getColorGradient(freq, bitType);
-            Log.e("BitDetail.java", "We got color - " + color);
-            bitCountTextView.setBackgroundColor(color);
             tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
-            tableTV.setText(Integer.toString(freq));
+            prevDate = currentDate;
+//            tableTV.setText(Integer.toString(freq));
 
         }
 
@@ -193,38 +198,6 @@ public class BitDetail extends AppCompatActivity {
             }
         }
 
-//        int retColor = R.color.white;
-//        if (habitType == BAD_BIT_ID) {
-//            if (frequency == 0) {
-//                retColor = R.color.white;
-//            } else if (frequency > 0 && frequency <= 1) {
-//                retColor = colorRed[0];
-//            } else if (frequency > 1 && frequency <= 3) {
-//                retColor = colorRed[1];
-//            } else if (frequency > 3 && frequency <= 7) {
-//                retColor = colorRed[2];
-//            } else if (frequency > 7 && frequency <= 13) {
-//                retColor = colorRed[3];
-//            } else {
-//                retColor = colorRed[4];
-//            }
-//        }
-//
-//        if (habitType == GOOD_BIT_ID) {
-//            if (frequency == 0) {
-//                retColor = R.color.white;
-//            } else if (frequency > 0 && frequency <= 1) {
-//                retColor = colorGreen[0];
-//            } else if (frequency > 1 && frequency <= 3) {
-//                retColor = colorGreen[1];
-//            } else if (frequency > 3 && frequency <= 7) {
-//                retColor = colorGreen[2];
-//            } else if (frequency > 7 && frequency <= 13) {
-//                retColor = colorGreen[3];
-//            } else {
-//                retColor = colorGreen[4];
-//            }
-//        }
         return retColor;
     }
 
@@ -244,5 +217,18 @@ public class BitDetail extends AppCompatActivity {
             bitCountTextView.setText("1");
 
         }
+    }
+
+    private int getDateDifference(String currentDate, String prevDate){
+        /*
+        We know that date format is in the form MM-dd-yyyy
+         */
+        int currentDay = Integer.parseInt(currentDate.substring(3, 5));
+        int prevDay = Integer.parseInt(prevDate.substring(3, 5));
+        Log.e("BitDetail.java", "currentDay " + currentDay + " , prevDay " + prevDay);
+        //This is opposite because we are filling circle table starting from bottom of frequency table
+        int difference = prevDay - currentDay;
+        if (difference == 0) return 1; //This case will apply for the first circle to draw, currentDate and prevDate will be same
+        return difference;
     }
 }

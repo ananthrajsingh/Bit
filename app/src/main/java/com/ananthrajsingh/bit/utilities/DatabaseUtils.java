@@ -5,6 +5,8 @@ import android.net.Uri;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
+import java.util.Calendar;
+
 import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 
 /**
@@ -75,6 +77,16 @@ public class DatabaseUtils {
     public static Uri buildUriToFreqTable(long id){
          return Uri.withAppendedPath(BitContract.BASE_CONTENT_URI,
                 BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
+    }
+
+    /**
+     * This will calculate the int value for today's day of week. For example, 0 for Sunday, 2 for
+     * Tuesday
+     * @return today's day in week starting from Sunday
+     */
+    public static int todaysDayOffset(){
+        Calendar calendar = Calendar.getInstance();
+        return ( calendar.get(Calendar.DAY_OF_WEEK) - 1 );
     }
 
 }
