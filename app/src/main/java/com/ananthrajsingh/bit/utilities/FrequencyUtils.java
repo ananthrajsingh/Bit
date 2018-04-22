@@ -60,7 +60,7 @@ public class FrequencyUtils {
         ContentValues values = new ContentValues();
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
-        values.put(BitContract.FrequencTableEntry.COLUMN_FREQUENCY, 1);
+        values.put(BitContract.FrequencTableEntry.COLUMN_FREQUENCY, 0);
         values.put(BitContract.FrequencTableEntry.COLUMN_DATE, todaysDate);
 
         String tableName = getTableNameFromUri(uri);

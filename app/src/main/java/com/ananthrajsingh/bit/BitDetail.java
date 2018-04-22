@@ -45,16 +45,30 @@ public class BitDetail extends AppCompatActivity {
         bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
 
 
-        /*Reference to the table of clicked item */
-        Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
         bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
-        bitCountTextView.setText("-1");
+//        bitCountTextView.setText("-1");
         plusOneButton = (Button) findViewById(R.id.button);
+        final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+        Cursor cursor = getContentResolver().query(freqTableUri,
+                null,
+                null,
+                null,
+                null);
+        if(cursor.getCount() == 0){
+            bitCountTextView.setText("0");
+            cursor.close();
+        }
+        else{
+            cursor.moveToLast();
+            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+            bitCountTextView.setText(Integer.toString(freq));
+            cursor.close();
+        }
+
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
                 Cursor cursor = getContentResolver().query(freqTableUri,
                         null,
                         null,
@@ -77,39 +91,10 @@ public class BitDetail extends AppCompatActivity {
                 }
             }
         });
-
         /*
-        ---------------------------------------------------------------------------------------------------------------
-        adding data to table
+         * This will fill dots in the matrix
          */
-        TextView tableTV;
-        String currentDate;
-        String prevDate = null;
-        Cursor cursor = getCursorForFreqTable(uriToFreqTable);
-        int i = cursor.getCount();
-        /*
-         * This if case will take care of case when new Bit is created and this activity is opened
-         * for the first time.
-         */
-        if (cursor.getCount() != 0) {
-            cursor.moveToPosition(i - 1);
-            prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
-        }
-        int index = todaysDayOffset();
-        while(i > 0){
-            i--;
-            cursor.moveToPosition(i);
-            tableTV = (TextView) findViewById(daysResourceId[index]);
-            currentDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
-            index = index + getDateDifference(currentDate, prevDate);
-            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-            int color = getColorGradient(freq, bitType);
-            tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
-            prevDate = currentDate;
-//            tableTV.setText(Integer.toString(freq));
-
-        }
-
+       showDataInMonthMatrix();
     }
 
     /**
@@ -237,5 +222,39 @@ public class BitDetail extends AppCompatActivity {
         int difference = prevDay - currentDay;
         if (difference == 0) return 1; //This case will apply for the first circle to draw, currentDate and prevDate will be same
         return difference;
+    }
+
+    private void showDataInMonthMatrix(){
+
+        /*Reference to the table of clicked item */
+        Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
+        TextView tableTV;
+        String currentDate;
+        String prevDate = null;
+        Cursor cursor = getCursorForFreqTable(uriToFreqTable);
+        int i = cursor.getCount();
+        /*
+         * This if case will take care of case when new Bit is created and this activity is opened
+         * for the first time.
+         */
+        if (cursor.getCount() != 0) {
+            cursor.moveToPosition(i - 1);
+            prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+        }
+        int index = todaysDayOffset();
+        while(i > 0){
+            i--;
+            cursor.moveToPosition(i);
+            tableTV = (TextView) findViewById(daysResourceId[index]);
+            currentDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
+            index = index + getDateDifference(currentDate, prevDate);
+            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+            int color = getColorGradient(freq, bitType);
+            tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
+            prevDate = currentDate;
+            tableTV.setText(Integer.toString(freq));
+
+        }
+
     }
 }
