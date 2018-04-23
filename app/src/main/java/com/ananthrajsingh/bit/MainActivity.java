@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View v) {
 //          COMPLETED 1 - send an intent to activity to choose good or bad bit
-                Intent intent = new Intent(getBaseContext(), ChooseBitActivity.class);
+                Intent intent = new Intent(getBaseContext(), CreateBit.class);
                 startActivity(intent);
 
             }

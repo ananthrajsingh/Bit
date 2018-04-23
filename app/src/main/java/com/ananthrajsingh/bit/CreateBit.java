@@ -9,8 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
+import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.makeContentValuesToInsert;
 
@@ -26,28 +30,39 @@ public class CreateBit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bit);
-        Intent intent = getIntent();
-
-        /*bitId represents whether user wants to insert a bad bit or good bit */
-        final int bitId = intent.getIntExtra(getString(R.string.bit_id_extra), 0);
+//        Intent intent = getIntent();
+//
+//        /*bitId represents whether user wants to insert a bad bit or good bit */
+//        final int bitId = intent.getIntExtra(getString(R.string.bit_id_extra), 0);
 
         /*Extracting information that the user entered and hit FAB*/
 
         FloatingActionButton fabInsertHabit = (FloatingActionButton) findViewById(R.id.fabAddBit);
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        final RadioButton radioButtonGood = (RadioButton) findViewById(R.id.goodRadio);
+        RadioButton radioButtonBad = (RadioButton) findViewById(R.id.badRadio);
+        editTextName = (EditText) findViewById(R.id.editTextName);
+        editTextMaxCount = (EditText) findViewById(R.id.editTextFrequency);
+
+
 
         /* When fab is clicked, this must happen */
         fabInsertHabit.setOnClickListener(new View.OnClickListener() {
             /* We will get the information in EditText fields and pass to database*/
             @Override
             public void onClick(View v) {
-
+                int bitIdRadio;
                 /*
-                 * Check if user hasn't left any field empty. That exception will be catched.
+                 * Check if user hasn't left any field empty. That exception will be caught.
                  */
                 try {
-                    editTextName = (EditText) findViewById(R.id.editTextName);
-
-                    editTextMaxCount = (EditText) findViewById(R.id.editTextFrequency);
+                     /* Checking which radio button is checked */
+                    if (radioButtonGood.isChecked()){
+                        bitIdRadio = GOOD_BIT_ID;
+                    }
+                    else{
+                        bitIdRadio = BAD_BIT_ID;
+                    }
                     String nameOfHabit = editTextName.getText().toString();
                     String maximumFrequencyString = editTextMaxCount.getText().toString();
                     int maximumFrequency = Integer.parseInt(maximumFrequencyString);
@@ -60,7 +75,7 @@ public class CreateBit extends AppCompatActivity {
                 /*
                  * We are inserting new row into the main table
                  */
-                    ContentValues values = makeContentValuesToInsert(nameOfHabit, bitId, maximumFrequency);
+                    ContentValues values = makeContentValuesToInsert(nameOfHabit, bitIdRadio, maximumFrequency);
                     Uri uriToMainTable = buildUriToMainTable();
                     Uri returnedUri = getContentResolver().insert(uriToMainTable, values);
                     //Check is insertion was successful
