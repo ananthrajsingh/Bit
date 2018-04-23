@@ -24,6 +24,7 @@ import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.todaysDayOffset;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 
 public class BitDetail extends AppCompatActivity {
 
@@ -215,12 +216,26 @@ public class BitDetail extends AppCompatActivity {
         /*
         We know that date format is in the form MM-dd-yyyy
          */
+
+        String todaysDate = getTodaysDate();
+        int todaysDay  = Integer.parseInt(todaysDate.substring(3, 5));
         int currentDay = Integer.parseInt(currentDate.substring(3, 5));
         int prevDay = Integer.parseInt(prevDate.substring(3, 5));
         Log.e("BitDetail.java", "currentDay " + currentDay + " , prevDay " + prevDay);
         //This is opposite because we are filling circle table starting from bottom of frequency table
         int difference = prevDay - currentDay;
-        if (difference == 0) return 1; //This case will apply for the first circle to draw, currentDate and prevDate will be same
+        if (difference == 0){
+
+            /*
+             * This case will apply for the first circle to draw, currentDate and prevDate will be same
+             * In this case we'll check difference between today's date andthe last entry in frequency
+             * table. If this case is not handled, dot filling will start from today's date, even if
+             * there are no entry for today or from weeks.
+             */
+
+            difference = todaysDay - currentDay;
+
+        }
         return difference;
     }
 
