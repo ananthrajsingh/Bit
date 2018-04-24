@@ -32,6 +32,7 @@ public class BitDetail extends AppCompatActivity {
     public Button plusOneButton;
     public TextView bitCountTextView;
     public long idOfHabit;
+    public int maxFrequency;
     public int bitType;
 
     @Override
@@ -44,7 +45,7 @@ public class BitDetail extends AppCompatActivity {
         Intent intent = getIntent();
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
         bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
-
+        maxFrequency = intent.getIntExtra(getString(R.string.max_frequency_extra), 1);
 
         bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
 //        bitCountTextView.setText("-1");
@@ -158,7 +159,6 @@ public class BitDetail extends AppCompatActivity {
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
-            Log.e("BitDetail.java", "We are in BAD_BIT_ID");
             if (frequency == 0) {
                 retColor = ContextCompat.getColor(this, R.color.white);
             } else if (frequency > 0 && frequency <= 1) {
@@ -175,7 +175,6 @@ public class BitDetail extends AppCompatActivity {
         }
 
         if (habitType == GOOD_BIT_ID) {
-            Log.e("BitDetail.java", "We are in GOOD_BIT_ID");
             if (frequency == 0) {
                 retColor = ContextCompat.getColor(this, R.color.white);
             } else if (frequency > 0 && frequency <= 1) {
@@ -199,8 +198,9 @@ public class BitDetail extends AppCompatActivity {
         Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
         Uri uri = buildUriToFreqTable(idOfHabit);
 
-                    /* This will insert a new row for today's entry, since we figured out that there is no today's row */
+        /* This will insert a new row for today's entry, since we figured out that there is no today's row */
         Uri returnedUri = getContentResolver().insert(uri, null);
+        Log.e("BitDetail.java", "addTodaysRow: We entered today's row, returned uri - " + returnedUri);
         if (returnedUri != null){
             int numberOfRowsAffected = getContentResolver().update(freqTableUri,
                     null,
@@ -221,7 +221,7 @@ public class BitDetail extends AppCompatActivity {
         int todaysDay  = Integer.parseInt(todaysDate.substring(3, 5));
         int currentDay = Integer.parseInt(currentDate.substring(3, 5));
         int prevDay = Integer.parseInt(prevDate.substring(3, 5));
-        Log.e("BitDetail.java", "currentDay " + currentDay + " , prevDay " + prevDay);
+        Log.e("BitDetail.java", "getDateDifference : currentDate - "+currentDate+" prevDate - "+prevDate+" todaysDate - "+todaysDate);
         //This is opposite because we are filling circle table starting from bottom of frequency table
         int difference = prevDay - currentDay;
         if (difference == 0){
@@ -250,24 +250,27 @@ public class BitDetail extends AppCompatActivity {
         int i = cursor.getCount();
         /*
          * This if case will take care of case when new Bit is created and this activity is opened
-         * for the first time.
+         * for the first time. This will initialize prevDate so that it is not null
          */
-        if (cursor.getCount() != 0) {
+        if (i != 0) {
             cursor.moveToPosition(i - 1);
             prevDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
         }
         int index = todaysDayOffset();
         while(i > 0){
+
             i--;
             cursor.moveToPosition(i);
-            tableTV = (TextView) findViewById(daysResourceId[index]);
             currentDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
             index = index + getDateDifference(currentDate, prevDate);
+            tableTV = (TextView) findViewById(daysResourceId[index]);
+            Log.e("BitDetail.java" , "Cursor count - " + cursor.getCount()
+                    + " Value of i - " + i + " Value of index - " + index);
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
             int color = getColorGradient(freq, bitType);
             tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
             prevDate = currentDate;
-//            tableTV.setText(Integer.toString(freq));
+            tableTV.setText(Integer.toString(freq));
 
         }
 

@@ -105,6 +105,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
          */
         final long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
         final int habitType = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_BIT_TYPE));
+        final int maximumFreq = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT));
         holder.mainTextView.setText(name);
         /*
          * Works well, though there are more options, we're sticking to this. Click on
@@ -118,6 +119,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
                 Intent intent = new Intent(v.getContext(), BitDetail.class);
                 intent.putExtra(v.getContext().getString(R.string.item_id_extra), id);
                 intent.putExtra(v.getContext().getString(R.string.item_type_extra), habitType);
+                intent.putExtra(v.getContext().getString(R.string.max_frequency_extra), maximumFreq);
                 v.getContext().startActivity(intent);
             }
         });
