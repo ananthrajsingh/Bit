@@ -11,6 +11,16 @@
 
     <string name="action_delete">Delete</string>
 
+    <string-array name="days_array">
+        <item>Sa</item>
+        <item>F</item>
+        <item>Th</item>
+        <item>W</item>
+        <item>Tu</item>
+        <item>M</item>
+        <item>Su</item>
+    </string-array>
+
     <string name="sunday">S</string>
     <string name="monday">M</string>
     <string name="tuesday">T</string>

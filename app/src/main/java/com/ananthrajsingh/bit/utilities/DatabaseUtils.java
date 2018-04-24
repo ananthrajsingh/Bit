@@ -79,14 +79,6 @@ public class DatabaseUtils {
                 BitContract.FrequencTableEntry.TABLE_BASE_NAME + id);
     }
 
-    /**
-     * This will calculate the int value for today's day of week. For example, 0 for Sunday, 2 for
-     * Tuesday
-     * @return today's day in week starting from Sunday
-     */
-    public static int todaysDayOffset(){
-        Calendar calendar = Calendar.getInstance();
-        return ( calendar.get(Calendar.DAY_OF_WEEK) - 1 );
-    }
+
 
 }
