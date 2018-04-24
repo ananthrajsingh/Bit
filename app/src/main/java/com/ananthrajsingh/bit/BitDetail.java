@@ -34,6 +34,7 @@ public class BitDetail extends AppCompatActivity {
     public long idOfHabit;
     public int maxFrequency;
     public int bitType;
+    public String habitName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,10 @@ public class BitDetail extends AppCompatActivity {
         idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
         bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
         maxFrequency = intent.getIntExtra(getString(R.string.max_frequency_extra), 1);
+        habitName = intent.getStringExtra(getString(R.string.name_extra));
+
+        /* Chnaging the name of ActionBar for the clicked habit */
+        getSupportActionBar().setTitle(habitName);
 
         bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
 //        bitCountTextView.setText("-1");
@@ -159,36 +164,46 @@ public class BitDetail extends AppCompatActivity {
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
-            if (frequency == 0) {
-                retColor = ContextCompat.getColor(this, R.color.white);
-            } else if (frequency > 0 && frequency <= 1) {
-                retColor = ContextCompat.getColor(this, R.color.red1);
-            } else if (frequency > 1 && frequency <= 3) {
-                retColor = ContextCompat.getColor(this, R.color.red2);
-            } else if (frequency > 3 && frequency <= 7) {
-                retColor = ContextCompat.getColor(this, R.color.red3);
-            } else if (frequency > 7 && frequency <= 13) {
-                retColor = ContextCompat.getColor(this, R.color.red4);
-            } else {
+            if (frequency >= maxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.red5);
+            }
+            else if (frequency >= (int) ((4*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.red4);
+            }
+            else if (frequency >= (int) ((3*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.red3);
+            }
+            else if (frequency >= (int) ((2*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.red2);
+            }
+            else if (frequency >= (int) (maxFrequency/5)){
+                retColor = ContextCompat.getColor(this, R.color.red1);
+            }
+            else{
+                retColor = ContextCompat.getColor(this, R.color.white);
+            }
+        }
+        if (habitType == GOOD_BIT_ID){
+            if (frequency >= maxFrequency){
+                retColor = ContextCompat.getColor(this, R.color.green5);
+            }
+            else if (frequency >= (int) ((4*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.green4);
+            }
+            else if (frequency >= (int) ((3*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.green3);
+            }
+            else if (frequency >= (int) ((2*maxFrequency)/5)){
+                retColor = ContextCompat.getColor(this, R.color.green2);
+            }
+            else if (frequency >= (int) (maxFrequency/5)){
+                retColor = ContextCompat.getColor(this, R.color.green1);
+            }
+            else{
+                retColor = ContextCompat.getColor(this, R.color.white);
             }
         }
 
-        if (habitType == GOOD_BIT_ID) {
-            if (frequency == 0) {
-                retColor = ContextCompat.getColor(this, R.color.white);
-            } else if (frequency > 0 && frequency <= 1) {
-                retColor = ContextCompat.getColor(this, R.color.green1);
-            } else if (frequency > 1 && frequency <= 3) {
-                retColor = ContextCompat.getColor(this, R.color.green2);
-            } else if (frequency > 3 && frequency <= 7) {
-                retColor = ContextCompat.getColor(this, R.color.green3);
-            } else if (frequency > 7 && frequency <= 13) {
-                retColor = ContextCompat.getColor(this, R.color.green4);
-            } else {
-                retColor = ContextCompat.getColor(this, R.color.green5);
-            }
-        }
 
         return retColor;
     }
