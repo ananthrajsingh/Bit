@@ -142,7 +142,15 @@ public class BitDetail extends AppCompatActivity {
                 return true;
             }
          else if (id == R.id.action_show_frequency){
-            isFrequencyShown = true;
+            CharSequence title = item.getTitle();
+            if (title.equals(getString(R.string.action_show_frequency))) {
+                item.setTitle(getString(R.string.action_hide_frequency));
+                isFrequencyShown = true;
+            }
+            else {
+                item.setTitle(getString(R.string.action_show_frequency));
+                isFrequencyShown = false;
+            }
             showDataInMonthMatrix(isFrequencyShown);
         }
         //DON'T return true here
@@ -332,9 +340,9 @@ public class BitDetail extends AppCompatActivity {
                  * android:layout_gravity="center" to all the bit views
                  */
                 tableTV.setGravity(Gravity.CENTER);
-
-
-
+            }
+            else {
+                tableTV.setText(null);
             }
 
         }
