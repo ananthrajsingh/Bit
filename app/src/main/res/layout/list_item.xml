@@ -2,14 +2,36 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="80dp">
     <TextView
+        android:id="@+id/list_item_bit_color"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rv_bit"/>
+    <TextView
+        android:layout_weight="120"
+        android:layout_gravity="center"
         android:id="@+id/list_item_textview"
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        tools:text="This is temporary text lorem. This textview will contain all"
+        tools:text="killer"
         android:textSize="32sp"/>
+    <TextView
+        android:id="@+id/list_item_bit_count"
+        android:layout_weight=""
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="100sp"
+        android:textAlignment="center"
+        tools:text="33"
+
+        />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ananthrajsingh.bit.data.BitContract;
+
+import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 
 /**
  * Created by Ananth on 4/8/2018.
@@ -43,12 +46,16 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
     class BitAdapterViewHolder extends RecyclerView.ViewHolder{
 
         /* Currently we have only one textview in our list_item */
-        // TODO: We'll be back here soon
+        // COMPLETED: We'll be back here soon
         TextView mainTextView;
+        TextView bitColorTextView;
+        TextView bitCountTextView;
 
         public BitAdapterViewHolder(View itemView) {
             super(itemView);
             mainTextView = (TextView) itemView.findViewById(R.id.list_item_textview);
+            bitColorTextView = (TextView) itemView.findViewById(R.id.list_item_bit_color);
+            bitCountTextView = (TextView) itemView.findViewById(R.id.list_item_bit_count);
         }
     }
 
@@ -108,6 +115,14 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
         final int maximumFreq = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT));
         final String habitName = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
         holder.mainTextView.setText(name);
+        /* This will set color of circle in recycler view */
+        if (habitType == GOOD_BIT_ID){
+            holder.bitColorTextView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.green3));
+        }
+        else {
+            holder.bitColorTextView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.red3));
+        }
+        holder.bitCountTextView.setText(maximumFreq);
         /*
          * Works well, though there are more options, we're sticking to this. Click on
          * RecyclerView item is dealt here. All it has to do is take us to BitDetail
