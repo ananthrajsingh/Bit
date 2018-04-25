@@ -140,43 +140,50 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDays">
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_05"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_06"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -197,42 +204,49 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -253,42 +267,49 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -309,42 +330,49 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_33"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_textview" />
 
             <TextView
+                style="@style/BitCircle"
                 android:id="@+id/bitTV_36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

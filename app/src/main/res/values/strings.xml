@@ -10,6 +10,7 @@
     <string name="name_extra">name</string>
 
     <string name="action_delete">Delete</string>
+    <string name="action_show_frequency">Show Frequency</string>
 
     <string-array name="days_array">
         <item>Sa</item>

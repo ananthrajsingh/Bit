@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ananthrajsingh.bit.BitDetail">
     <item
+        android:id="@+id/action_show_frequency"
+        android:title="@string/action_show_frequency"
+        app:showAsAction="never"
+        android:orderInCategory="200"
+        />
+    <item
         android:id="@+id/action_delete"
         android:title="@string/action_delete"
         android:orderInCategory="100"

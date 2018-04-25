@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class BitDetail extends AppCompatActivity {
     public int maxFrequency;
     public int bitType;
     public String habitName;
+    public boolean isFrequencyShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +94,13 @@ public class BitDetail extends AppCompatActivity {
 
                 }
                 /* This will update matrix after every click */
-                showDataInMonthMatrix();
+                showDataInMonthMatrix(isFrequencyShown);
             }
         });
         /*
          * This will fill dots in the matrix on start up of the activity
          */
-       showDataInMonthMatrix();
+       showDataInMonthMatrix(isFrequencyShown);
     }
 
     /**
@@ -139,6 +141,10 @@ public class BitDetail extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
+         else if (id == R.id.action_show_frequency){
+            isFrequencyShown = true;
+            showDataInMonthMatrix(isFrequencyShown);
+        }
         //DON'T return true here
         /*
          * This is important, you cannot simply pass true here. There might be more options
@@ -256,7 +262,7 @@ public class BitDetail extends AppCompatActivity {
      * Then we come to the bit matrix, bit matrix is inflated by this function.
      * We are calling this in the onCreate as we want this to lay as soon as activity is opened.
      */
-    private void showDataInMonthMatrix(){
+    private void showDataInMonthMatrix(boolean isFrequencyShown){
 
         /*
          * This will make weekday names M, Th, W etc to slide in sync with the bits.
@@ -319,7 +325,17 @@ public class BitDetail extends AppCompatActivity {
             int color = getColorGradient(freq, bitType);
             tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
             prevDate = currentDate;
-//            tableTV.setText(Integer.toString(freq));
+            if (isFrequencyShown) {
+                tableTV.setText(Integer.toString(freq));
+                /*
+                 * This below statement made unfilled bits to shift down. To fix this, we added
+                 * android:layout_gravity="center" to all the bit views
+                 */
+                tableTV.setGravity(Gravity.CENTER);
+
+
+
+            }
 
         }
 
