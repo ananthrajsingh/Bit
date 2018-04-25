@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -30,10 +29,7 @@ public class CreateBit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bit);
-//        Intent intent = getIntent();
-//
-//        /*bitId represents whether user wants to insert a bad bit or good bit */
-//        final int bitId = intent.getIntExtra(getString(R.string.bit_id_extra), 0);
+
 
         /*Extracting information that the user entered and hit FAB*/
 
@@ -64,6 +60,13 @@ public class CreateBit extends AppCompatActivity {
                         bitIdRadio = BAD_BIT_ID;
                     }
                     String nameOfHabit = editTextName.getText().toString();
+                    /*
+                     * This below code will be useful if name was left open and frequency was given.
+                     * Without this, habit was created with no name.
+                     */
+                    if (nameOfHabit.equals("")){
+                        throw new IllegalArgumentException();
+                    }
                     String maximumFrequencyString = editTextMaxCount.getText().toString();
                     int maximumFrequency = Integer.parseInt(maximumFrequencyString);
 
@@ -89,7 +92,6 @@ public class CreateBit extends AppCompatActivity {
 
                 }catch (Exception e){
                     /* Will execute if any one field is left empty */
-                    Log.e("CreateBit onClick FAB", "Invalid values entered in fields");
                     if(toast != null){
                         toast.cancel();
                     }
