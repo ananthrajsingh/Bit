@@ -32,7 +32,6 @@ public class BitDetail extends AppCompatActivity {
 
 //    public TextView bitCountTextView;
     public Button plusOneButton;
-    public TextView bitCountTextView;
     public long idOfHabit;
     public int maxFrequency;
     public int bitType;
@@ -55,7 +54,6 @@ public class BitDetail extends AppCompatActivity {
         /* Changing the name of ActionBar for the clicked habit */
         getSupportActionBar().setTitle(habitName);
 
-        bitCountTextView = (TextView) findViewById(R.id.textView_temp_plusone);
         plusOneButton = (Button) findViewById(R.id.button);
         if (bitType == GOOD_BIT_ID){
             plusOneButton.setBackground(getDrawable(R.drawable.button_plus_one_good));
@@ -90,8 +88,6 @@ public class BitDetail extends AppCompatActivity {
                     int updatedInt = getContentResolver().update(freqTableUri, null, null, null);
                     cursor.moveToLast();
                     int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY)) + 1;
-                    bitCountTextView.setText(Integer.toString(freq));
-
                 }
                 /* This will update matrix after every click */
                 showDataInMonthMatrix(isFrequencyShown);
@@ -233,8 +229,6 @@ public class BitDetail extends AppCompatActivity {
                     null,
                     null);
 
-            bitCountTextView.setText("1");
-
         }
     }
 
@@ -363,13 +357,11 @@ public class BitDetail extends AppCompatActivity {
                 null,
                 null);
         if(cursor.getCount() == 0){
-            bitCountTextView.setText("0");
             cursor.close();
         }
         else{
             cursor.moveToLast();
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-            bitCountTextView.setText(Integer.toString(freq));
             cursor.close();
         }
     }
