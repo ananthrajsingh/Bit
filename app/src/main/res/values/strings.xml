@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Bit</string>
+    <string name="splash_description">Your habit tracker</string>
     <string name="good_bit">Good Bit</string>
     <string name="bad_bit">Bad Bit</string>
 
@@ -38,4 +39,8 @@
     <string name="habit_type_textview">Habit Type</string>
 
     <string name="create_bit_title">Track New Habit</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

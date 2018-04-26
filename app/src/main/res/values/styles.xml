@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#1de9b6</item>
-        <item name="colorPrimaryDark">#00b686</item>
-        <item name="colorAccent">#d50000</item>
+        <item name="colorPrimary">#1a237e</item>
+        <item name="colorPrimaryDark">#000051</item>
+        <item name="colorAccent">#64dd17</item>
     </style>
 
     <style name="BitCircle" parent="Base.Theme.AppCompat">
@@ -20,6 +20,25 @@
 
     <style name="AppTheme.Bit" parent="@style/AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.Bit.NoTitle</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" >
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>
