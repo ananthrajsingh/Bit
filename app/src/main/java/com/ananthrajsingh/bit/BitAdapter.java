@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -116,6 +117,8 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
         final int maximumFreq = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT));
         final String habitName = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
         holder.mainTextView.setText(name);
+        Typeface typeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/MuseoSans.otf");
+        holder.mainTextView.setTypeface(typeFace);
         /* This will set color of circle in recycler view */
         if (habitType == GOOD_BIT_ID){
             holder.bitColorTextView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.green3)));

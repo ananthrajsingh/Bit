@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setElevation(0f);
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
 
         /* Get hold of the recycler view defined in xml */

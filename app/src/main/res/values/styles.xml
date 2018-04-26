@@ -3,13 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#ffff00</item>
+        <item name="colorPrimaryDark">#c7cc00</item>
+        <item name="colorAccent">#76ff03</item>
     </style>
 
     <style name="BitCircle" parent="Base.Theme.AppCompat">
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="ActionBar.Solid.Bit.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_logo</item>
+    </style>
+
+
+    <style name="AppTheme.Bit" parent="@style/AppTheme">
+        <item name="actionBarStyle">@style/ActionBar.Solid.Bit.NoTitle</item>
     </style>
 
 </resources>
