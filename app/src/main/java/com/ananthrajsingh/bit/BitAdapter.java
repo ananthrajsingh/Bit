@@ -2,6 +2,7 @@ package com.ananthrajsingh.bit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -117,12 +118,12 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
         holder.mainTextView.setText(name);
         /* This will set color of circle in recycler view */
         if (habitType == GOOD_BIT_ID){
-            holder.bitColorTextView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.green3));
+            holder.bitColorTextView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.green3)));
         }
         else {
-            holder.bitColorTextView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.red3));
+            holder.bitColorTextView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.red3)));
         }
-        holder.bitCountTextView.setText(maximumFreq);
+        holder.bitCountTextView.setText(Integer.toString(maximumFreq));
         /*
          * Works well, though there are more options, we're sticking to this. Click on
          * RecyclerView item is dealt here. All it has to do is take us to BitDetail
