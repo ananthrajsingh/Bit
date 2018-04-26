@@ -29,6 +29,7 @@ public class CreateBit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bit);
+        getSupportActionBar().setTitle(R.string.create_bit_title);
 
 
         /*Extracting information that the user entered and hit FAB*/

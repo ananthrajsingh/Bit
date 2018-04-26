@@ -23,13 +23,13 @@
         <shape android:shape="oval"
             >
             <solid
-                android:color="@color/green1"/>
+                android:color="@color/green5"/>
             <size
                 android:height="180dp"
                 android:width="180dp"/>
             <stroke
                 android:width="2dp"
-                android:color="@color/green5"
+                android:color="@color/black"
                 />
             <padding
                 android:bottom="4dp"

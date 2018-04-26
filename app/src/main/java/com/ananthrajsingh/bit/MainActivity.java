@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
+        getSupportActionBar().collapseActionView();
+
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
 
         /* Get hold of the recycler view defined in xml */

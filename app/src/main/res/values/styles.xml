@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#ffff00</item>
-        <item name="colorPrimaryDark">#c7cc00</item>
-        <item name="colorAccent">#76ff03</item>
+        <item name="colorPrimary">#1de9b6</item>
+        <item name="colorPrimaryDark">#00b686</item>
+        <item name="colorAccent">#d50000</item>
     </style>
 
     <style name="BitCircle" parent="Base.Theme.AppCompat">

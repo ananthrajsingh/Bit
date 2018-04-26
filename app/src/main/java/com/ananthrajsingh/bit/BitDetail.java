@@ -56,10 +56,10 @@ public class BitDetail extends AppCompatActivity {
 
         plusOneButton = (Button) findViewById(R.id.button);
         if (bitType == GOOD_BIT_ID){
-            plusOneButton.setBackground(getDrawable(R.drawable.button_plus_one_good));
+            plusOneButton.setBackground(getDrawable(R.drawable.button_good_ripple));
         }
         else {
-            plusOneButton.setBackground(getDrawable(R.drawable.button_plus_one_bad));
+            plusOneButton.setBackground(getDrawable(R.drawable.button_bad_ripple));
         }
 
         /* This will set 0 if there is no today's row, else will show today's count */
