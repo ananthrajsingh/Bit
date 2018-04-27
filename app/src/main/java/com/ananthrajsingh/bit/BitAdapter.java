@@ -104,18 +104,24 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
      */
     @Override
     public void onBindViewHolder(BitAdapterViewHolder holder, int position) {
+        /* To send position to BitDetail */
+        final int finalPosition = position;
         mCursor.moveToPosition(position);
         String name = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
+
         /*
          * We will need _ID in BitDetail activity to display the details of clicked activity
          * Now, we cannot pass getAdapterPosition() to BitDetail activity, that will work until
          * an item is deleted, then position and id will mismatch. To solve this we will add
          * a tag to every item of its corresponding id represented in the Main table
          */
+
         final long id = mCursor.getLong(mCursor.getColumnIndex(BitContract.MainTableEntry._ID));
         final int habitType = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_BIT_TYPE));
         final int maximumFreq = mCursor.getInt(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_MAX_BIT_COUNT));
         final String habitName = mCursor.getString(mCursor.getColumnIndex(BitContract.MainTableEntry.COLUMN_NAME));
+
+
         holder.mainTextView.setText(name);
         Typeface typeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/MuseoSans.otf");
         holder.mainTextView.setTypeface(typeFace);
@@ -141,6 +147,12 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
                 intent.putExtra(v.getContext().getString(R.string.item_type_extra), habitType);
                 intent.putExtra(v.getContext().getString(R.string.max_frequency_extra), maximumFreq);
                 intent.putExtra(v.getContext().getString(R.string.name_extra), habitName);
+                /*
+                 * This is used for UNDO action in SnackBar.
+                 * When Delete is selected from option's menu, we will just remove the habit instead
+                 * of deleting it.
+                 */
+                intent.putExtra(v.getContext().getString(R.string.position_extra), finalPosition);
                 v.getContext().startActivity(intent);
             }
         });

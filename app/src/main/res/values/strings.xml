@@ -9,6 +9,13 @@
     <string name="item_type_extra">item_type</string>
     <string name="max_frequency_extra">maximum_frequency</string>
     <string name="name_extra">name</string>
+    <string name="position_extra">position</string>
+
+    <string name="id_of_habit_extra">id_habit</string>
+    <string name="rv_position_extra">rv_position</string>
+
+    <string name="habit_deleted_snackbar">Habit Deleted</string>
+    <string name="undo">UNDO</string>
 
     <string name="action_delete">Delete</string>
     <string name="action_show_frequency">Show Frequency</string>

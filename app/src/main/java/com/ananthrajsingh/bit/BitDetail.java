@@ -36,6 +36,7 @@ public class BitDetail extends AppCompatActivity {
     public int maxFrequency;
     public int bitType;
     public String habitName;
+    public int positionInRv; // Used to make this habit disappear from RV on delete
     public boolean isFrequencyShown = false;
 
     @Override
@@ -50,6 +51,7 @@ public class BitDetail extends AppCompatActivity {
         bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
         maxFrequency = intent.getIntExtra(getString(R.string.max_frequency_extra), 1);
         habitName = intent.getStringExtra(getString(R.string.name_extra));
+        positionInRv = intent.getIntExtra(getString(R.string.position_extra), 100);
 
         /* Changing the name of ActionBar for the clicked habit */
         getSupportActionBar().setTitle(habitName);
@@ -131,9 +133,11 @@ public class BitDetail extends AppCompatActivity {
         int id = item.getItemId();
         Uri uri1 = buildUriToMainTable(idOfHabit);
         if (id == R.id.action_delete){
-
-                getContentResolver().delete(uri1, null, null);
+//            MainActivity.removeHabitFromRv(positionInRv, idOfHabit);
+//                getContentResolver().delete(uri1, null, null);
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(getString(R.string.rv_position_extra), positionInRv);
+                intent.putExtra(getString(R.string.id_of_habit_extra), idOfHabit);
                 startActivity(intent);
                 return true;
             }

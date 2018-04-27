@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -13,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.ananthrajsingh.bit.data.BitContract;
+
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -20,11 +23,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecyclerView;
     private BitAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private static long idToRemoveFromRv;
+    private int loaderId;
 
     public static final int BAD_BIT_ID = 1;
     public static final int GOOD_BIT_ID = 2;
 
     public static final int DATABASE_LOADER_ID = 18;
+    public static final int DELETED_ROW_DATABASE_ID = 28;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
         getSupportActionBar().collapseActionView();
+
+        Intent intent = getIntent();
+        int rvPosition = intent.getIntExtra(getString(R.string.rv_position_extra), -1);
+        idToRemoveFromRv = intent.getLongExtra(getString(R.string.id_of_habit_extra), -1);
+
+        /* Is this activity called after selecting delete from BitDetail?
+         * If it would be then, rvPosition and idToRemoveFromRv won't be -1
+         * Else, we came here by SplashActivity
+         */
+        if (rvPosition != -1 && idToRemoveFromRv != -1){
+            loaderId = DELETED_ROW_DATABASE_ID;
+            makeSnackBar();
+        }
+        else{
+            loaderId = DATABASE_LOADER_ID;
+        }
 
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
 
@@ -72,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             }
         });
-        getSupportLoaderManager().initLoader(DATABASE_LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(loaderId, null, this);
     }
 
     /*
@@ -114,6 +136,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         null,
                         null,
                         null);
+            case DELETED_ROW_DATABASE_ID:
+                String selection = BitContract.MainTableEntry._ID + " != ?";
+                String[] selectionArgs = {Long.toString(idToRemoveFromRv)};
+                /*
+                 * We don't want a particular row which is selected to be deleted (but not yet deleted)
+                 * Thus we will remove it from the query.
+                 */
+                return new CursorLoader(this,
+                        uri,
+                        null,
+                        selection,
+                        selectionArgs,
+                        null
+                        );
             default:
                 throw new IllegalArgumentException("This loader is currently not implemented :( loaderId - " + loaderId);
         }
@@ -137,5 +173,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+//    public void removeHabitFromRv(int position, int idOfHabit){
+//        idToRemoveFromRv = idOfHabit;
+//        getSupportLoaderManager().initLoader(DELETED_ROW_DATABASE_ID, null, this);
+//    }
+    private void makeSnackBar(){
+        Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.habit_deleted_snackbar), Snackbar.LENGTH_LONG )
+                .setAction(getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getSupportLoaderManager().initLoader(DATABASE_LOADER_ID, null, MainActivity.this);
+
+                    }
+                }).addCallback( new Snackbar.Callback(){
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int dismissType) {
+                        super.onDismissed(transientBottomBar, dismissType);
+                        if (dismissType != DISMISS_EVENT_ACTION){
+                            Uri uri = buildUriToMainTable(idToRemoveFromRv);
+
+                            getContentResolver().delete(uri, null, null);
+                        }
+                    }
+                });
+        snackbar.show();
     }
 }
