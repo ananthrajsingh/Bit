@@ -15,8 +15,6 @@ import android.support.v7.app.NotificationCompat;
 import com.ananthrajsingh.bit.MainActivity;
 import com.ananthrajsingh.bit.R;
 
-import static android.os.Build.VERSION_CODES.N;
-
 /**
  * Created by Ananth on 4/27/2018.
  * This class will have helper methods which will help create a notification for our application
@@ -35,7 +33,7 @@ public class NotificationUtils {
      */
     public static void remindUserToUpdate(Context context){
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.ic_logo)
                 .setLargeIcon(largeIcon(context))

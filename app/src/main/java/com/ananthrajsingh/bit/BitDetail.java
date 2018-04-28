@@ -23,6 +23,7 @@ import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
+import static com.ananthrajsingh.bit.utilities.NotificationUtils.remindUserToUpdate;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.todaysDayOffset;
@@ -68,11 +69,12 @@ public class BitDetail extends AppCompatActivity {
         final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
         setInitialCount(freqTableUri);
 
-
+        remindUserToUpdate(getBaseContext());
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Cursor cursor = getContentResolver().query(freqTableUri,
                         null,
                         null,
