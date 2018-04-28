@@ -17,6 +17,9 @@
     <string name="habit_deleted_snackbar">Habit Deleted</string>
     <string name="undo">UNDO</string>
 
+    <string name="notification_title">Update your counts honestly</string>
+    <string name="notification_body">Your habits are waiting for your honesty</string>
+
     <string name="action_delete">Delete</string>
     <string name="action_show_frequency">Show Frequency</string>
     <string name="action_hide_frequency">Hide Frequency</string>
