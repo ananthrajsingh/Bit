@@ -1,5 +1,8 @@
 package com.ananthrajsingh.bit;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,8 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
+import com.ananthrajsingh.bit.sync.NotificationAlarmReciever;
+
+import java.util.Calendar;
 
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 
@@ -32,12 +39,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int DATABASE_LOADER_ID = 18;
     public static final int DELETED_ROW_DATABASE_ID = 28;
 
+    public static final int NOTIFICATION_REPEATER_ALARM_PENDING_INTENT_ID = 12;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
         getSupportActionBar().collapseActionView();
+
+        setupNotificationRepeater();
 
         Intent intent = getIntent();
         int rvPosition = intent.getIntExtra(getString(R.string.rv_position_extra), -1);
@@ -199,5 +210,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     }
                 });
         snackbar.show();
+    }
+    public void setupNotificationRepeater(){
+        Intent notificationAlarmIntent = new Intent(MainActivity.this, NotificationAlarmReciever.class);
+        PendingIntent notificationAlarmPendingIntent = PendingIntent.getBroadcast(MainActivity.this,
+                NOTIFICATION_REPEATER_ALARM_PENDING_INTENT_ID,
+                notificationAlarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 19);
+        calendar.set(Calendar.MINUTE, 15);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                notificationAlarmPendingIntent);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+
     }
 }
