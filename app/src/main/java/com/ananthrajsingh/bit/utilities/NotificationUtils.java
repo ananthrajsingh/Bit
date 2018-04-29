@@ -9,11 +9,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 
 import com.ananthrajsingh.bit.MainActivity;
 import com.ananthrajsingh.bit.R;
+import com.ananthrajsingh.bit.sync.HabitReminderIntentService;
 
 /**
  * Created by Ananth on 4/27/2018.
@@ -25,6 +27,7 @@ public class NotificationUtils {
 
     public static final int BIT_PENDING_INTENT_ID = 4388;
     public static final int NOTIFICATION_ID = 5454;
+    public static final int ACTION_IGNORE_PENDING_INTENT_ID = 1212;
 
     /**
      * This function will build the notification and display it. It will be helpful to see
@@ -41,6 +44,7 @@ public class NotificationUtils {
                 .setContentText(context.getString(R.string.notification_body))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         context.getString(R.string.notification_body)))
+                .addAction(ignoreReminderAction(context))
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true);
@@ -53,6 +57,28 @@ public class NotificationUtils {
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private static Action ignoreReminderAction(Context context){
+        Intent ignoreReminderIntent = new Intent(context, HabitReminderIntentService.class);
+        ignoreReminderIntent.setAction(HabitReminderIntentService.ACTION_DISMISS_NOTIFICATION);
+        PendingIntent ignoreReminderPendingIntent = PendingIntent.getService(
+                context,
+                ACTION_IGNORE_PENDING_INTENT_ID,
+                ignoreReminderIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        Action ignoreReminderAction = new Action(R.drawable.ic_check_white_24dp,
+                    "No, Thanks",
+                ignoreReminderPendingIntent
+                );
+        return ignoreReminderAction;
+    }
+
+    public static void clearAllNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 
     /**

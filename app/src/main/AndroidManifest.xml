@@ -39,6 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".sync.HabitReminderIntentService"
+            android:exported="false"/>
     </application>
 
 </manifest>
