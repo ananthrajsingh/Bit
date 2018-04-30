@@ -23,9 +23,8 @@ import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTableWithDate;
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
-import static com.ananthrajsingh.bit.utilities.NotificationUtils.remindUserToUpdate;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
-import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getDateDifference;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.todaysDayOffset;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.weeksdaysResourceId;
 
@@ -69,7 +68,6 @@ public class BitDetail extends AppCompatActivity {
         final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
         setInitialCount(freqTableUri);
 
-        remindUserToUpdate(getBaseContext());
 
         plusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,7 +191,7 @@ public class BitDetail extends AppCompatActivity {
                 retColor = ContextCompat.getColor(this, R.color.red1);
             }
             else{
-                retColor = ContextCompat.getColor(this, R.color.white);
+                retColor = ContextCompat.getColor(this, R.color.red1);
             }
         }
         if (habitType == GOOD_BIT_ID){
@@ -213,7 +211,7 @@ public class BitDetail extends AppCompatActivity {
                 retColor = ContextCompat.getColor(this, R.color.green1);
             }
             else{
-                retColor = ContextCompat.getColor(this, R.color.white);
+                retColor = ContextCompat.getColor(this, R.color.green1);
             }
         }
 
@@ -238,32 +236,6 @@ public class BitDetail extends AppCompatActivity {
         }
     }
 
-    private int getDateDifference(String currentDate, String prevDate){
-        /*
-        We know that date format is in the form MM-dd-yyyy
-         */
-
-        String todaysDate = getTodaysDate();
-        int todaysDay  = Integer.parseInt(todaysDate.substring(3, 5));
-        int currentDay = Integer.parseInt(currentDate.substring(3, 5));
-        int prevDay = Integer.parseInt(prevDate.substring(3, 5));
-        Log.e("BitDetail.java", "getDateDifference : currentDate - "+currentDate+" prevDate - "+prevDate+" todaysDate - "+todaysDate);
-        //This is opposite because we are filling circle table starting from bottom of frequency table
-        int difference = prevDay - currentDay;
-        if (difference == 0){
-
-            /*
-             * This case will apply for the first circle to draw, currentDate and prevDate will be same
-             * In this case we'll check difference between today's date andthe last entry in frequency
-             * table. If this case is not handled, dot filling will start from today's date, even if
-             * there are no entry for today or from weeks.
-             */
-
-            difference = todaysDay - currentDay;
-
-        }
-        return difference;
-    }
 
     /**
      * First, this function arranges the weekday titles starting from today's day at index 0.
@@ -328,22 +300,25 @@ public class BitDetail extends AppCompatActivity {
             cursor.moveToPosition(numberOfBitsLeft);
             currentDate = cursor.getString(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_DATE));
             index = index + getDateDifference(currentDate, prevDate);
-            tableTV = (TextView) findViewById(daysResourceId[index]);
-            int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-            int color = getColorGradient(freq, bitType);
-            tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
-            prevDate = currentDate;
-            if (isFrequencyShown) {
-                tableTV.setText(Integer.toString(freq));
+            if(index < 28 && index >= 0){
+                tableTV = (TextView) findViewById(daysResourceId[index]);
+                int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
+                int color = getColorGradient(freq, bitType);
+                tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
+                prevDate = currentDate;
+                if (isFrequencyShown) {
+                    tableTV.setText(Integer.toString(freq));
                 /*
                  * This below statement made unfilled bits to shift down. To fix this, we added
                  * android:layout_gravity="center" to all the bit views
                  */
-                tableTV.setGravity(Gravity.CENTER);
+                    tableTV.setGravity(Gravity.CENTER);
+                }
+                else {
+                    tableTV.setText(null);
+                }
             }
-            else {
-                tableTV.setText(null);
-            }
+
 
         }
 

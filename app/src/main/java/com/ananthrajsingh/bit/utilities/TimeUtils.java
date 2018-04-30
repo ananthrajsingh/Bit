@@ -1,5 +1,7 @@
 package com.ananthrajsingh.bit.utilities;
 
+import android.util.Log;
+
 import com.ananthrajsingh.bit.R;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +50,72 @@ public class TimeUtils {
     public static int todaysDayOffset(){
         Calendar calendar = Calendar.getInstance();
         return ( calendar.get(Calendar.DAY_OF_WEEK) - 1 );
+    }
+
+    public static int getDateDifference(String currentDate, String prevDate){
+        /*
+        We know that date format is in the form MM-dd-yyyy
+         */
+        Log.e("TimeUtils.java", "we are in getDateDifference");
+        String todaysDate = getTodaysDate();
+        int todaysDay  = Integer.parseInt(todaysDate.substring(3, 5));
+        int currentDay = Integer.parseInt(currentDate.substring(3, 5));
+        int prevDay = Integer.parseInt(prevDate.substring(3, 5));
+
+        int todaysMonth = Integer.parseInt(todaysDate.substring(0,2));
+        int currentMonth = Integer.parseInt(currentDate.substring(0, 2));
+        int prevMonth = Integer.parseInt(prevDate.substring(0, 2));
+
+        int differenceOffset = 0;
+
+        Log.e("BitDetail.java", "getDateDifference : currentDate - "+currentDate+" prevDate - "+prevDate+" todaysDate - "+todaysDate);
+        Log.e("BitDetail.java", "getDateDifference : currentMonth - "+currentMonth+" prevMonth - "+prevMonth+" todaysMonth - "+todaysMonth);
+
+        //This is opposite because we are filling circle table starting from bottom of frequency table
+
+        if (todaysMonth != currentMonth){
+            Log.e("TimeUtils.java", " We are in if (todaysMonth != currentMonth) todaysMonth - " + todaysMonth +
+                    " currentMonth - " + currentMonth);
+            differenceOffset = getNumberOfDaysInMonth(currentMonth);
+
+        }
+        else if (currentMonth != prevMonth){
+            Log.e("TimeUtils.java", " We are in if (currentMonth != prevMonth) currentMonth - " + currentMonth +
+                    " prevMonth - " + prevMonth);
+            differenceOffset = getNumberOfDaysInMonth(prevMonth);
+        }
+        int difference = prevDay - currentDay;
+        Log.e("TimeUtils", "difference = prevDay - currentDay + differenceOffset -- "+ difference +" = "
+                +prevDay+" - "+currentDay+" + "+differenceOffset);
+        if (difference == 0){
+
+            /*
+             * This case will apply for the first circle to draw, currentDate and prevDate will be same
+             * In this case we'll check difference between today's date andthe last entry in frequency
+             * table. If this case is not handled, dot filling will start from today's date, even if
+             * there are no entry for today or from weeks.
+             */
+
+            difference = todaysDay - currentDay + differenceOffset;
+
+        }
+        Log.e("TimeUtils.java", "returned difference - " + difference);
+        return difference;
+    }
+
+    public static int getNumberOfDaysInMonth(int month){
+        int days;
+        if (month == 2){
+            days = 28;
+        }
+        else if (month == 1 || month == 3 || month == 5 || month == 7
+                || month == 8 || month == 10 || month == 12){
+            days = 31;
+        }
+        else {
+            days = 30;
+        }
+        return days;
     }
 
 }

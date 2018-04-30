@@ -59,6 +59,7 @@ public class NotificationUtils {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
+
     private static Action ignoreReminderAction(Context context){
         Intent ignoreReminderIntent = new Intent(context, HabitReminderIntentService.class);
         ignoreReminderIntent.setAction(HabitReminderIntentService.ACTION_DISMISS_NOTIFICATION);

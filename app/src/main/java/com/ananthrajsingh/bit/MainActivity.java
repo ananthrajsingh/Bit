@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
 import com.ananthrajsingh.bit.sync.NotificationAlarmReciever;
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY,
                 notificationAlarmPendingIntent);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
     }
 }
