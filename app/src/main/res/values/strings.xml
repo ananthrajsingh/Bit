@@ -49,6 +49,7 @@
     <string name="habit_type_textview">Habit Type</string>
 
     <string name="create_bit_title">Track New Habit</string>
+    <string name="main_activity_title">Habits</string>
 
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>

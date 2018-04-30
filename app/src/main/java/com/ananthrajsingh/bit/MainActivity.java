@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
         getSupportActionBar().collapseActionView();
+        getSupportActionBar().setTitle(R.string.main_activity_title);
+
 
         setupNotificationRepeater();
 
@@ -190,7 +193,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        getSupportLoaderManager().initLoader(DELETED_ROW_DATABASE_ID, null, this);
 //    }
     private void makeSnackBar(){
-        Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.habit_deleted_snackbar), Snackbar.LENGTH_LONG )
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.habit_deleted_snackbar), Snackbar.LENGTH_LONG )
                 .setAction(getString(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

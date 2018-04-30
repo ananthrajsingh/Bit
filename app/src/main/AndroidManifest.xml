@@ -13,7 +13,7 @@
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Bit">
+            android:theme="@style/AppTheme">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
