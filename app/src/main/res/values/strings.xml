@@ -62,4 +62,5 @@
     <string name="limit_crossed_toast_bad">You are already above the limit!</string>
     <string name="limit_reached_toast_good">Great! You\'ve reached the target.</string>
     <string name="limit_crossed_toast_good">Congratulations on surpassing your expectations!</string>
+    <string name="bit_detail_introduction_toast">Press +1 to get started</string>
 </resources>

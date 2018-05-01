@@ -26,6 +26,7 @@ import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.getDateDifference;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.todaysDayOffset;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.weeksdaysResourceId;
 
@@ -179,20 +180,20 @@ public class BitDetail extends AppCompatActivity {
         if (habitType == BAD_BIT_ID) {
 
 
-            if (frequency == maxFrequency){
-                if (!(mToast.equals(null))){
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
-                mToast.show();
-            }
-            else if (frequency > maxFrequency){
-                if (!(mToast.equals(null))){
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
-                mToast.show();
-            }
+//            if (frequency == maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
+//            else if (frequency > maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
 
 
             if (frequency >= maxFrequency){
@@ -216,20 +217,20 @@ public class BitDetail extends AppCompatActivity {
         }
         if (habitType == GOOD_BIT_ID){
 
-            if (frequency == maxFrequency){
-                if (!(mToast.equals(null))){
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
-                mToast.show();
-            }
-            else if (frequency > maxFrequency){
-                if (!(mToast.equals(null))){
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
-                mToast.show();
-            }
+//            if (frequency == maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
+//            else if (frequency > maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
 
 
             if (frequency >= maxFrequency){
@@ -302,6 +303,10 @@ public class BitDetail extends AppCompatActivity {
         String prevDate = null;
         Cursor cursor = getCursorForFreqTable(uriToFreqTable);
         int numberOfBitsLeft = cursor.getCount();
+
+        if (numberOfBitsLeft == 0){
+            Toast.makeText(this, getString(R.string.bit_detail_introduction_toast), Toast.LENGTH_LONG).show();
+        }
         /*
          * This if case will take care of case when new Bit is created and this activity is opened
          * for the first time. This will initialize prevDate so that it is not null
@@ -353,6 +358,43 @@ public class BitDetail extends AppCompatActivity {
                 }
                 else {
                     tableTV.setText(null);
+                }
+
+                if (currentDate.equals(getTodaysDate())){
+                    if (bitType == BAD_BIT_ID) {
+
+
+                        if (freq == maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        } else if (freq > maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        }
+                    }
+                    if (bitType == GOOD_BIT_ID) {
+
+                        if (freq == maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        } else if (freq > maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        }
+                    }
+
                 }
             }
 
