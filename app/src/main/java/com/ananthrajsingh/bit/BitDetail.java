@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
 
@@ -38,6 +39,7 @@ public class BitDetail extends AppCompatActivity {
     public String habitName;
     public int positionInRv; // Used to make this habit disappear from RV on delete
     public boolean isFrequencyShown = false;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +177,24 @@ public class BitDetail extends AppCompatActivity {
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
+
+
+            if (frequency == maxFrequency){
+                if (!(mToast.equals(null))){
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+            else if (frequency > maxFrequency){
+                if (!(mToast.equals(null))){
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+
+
             if (frequency >= maxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.red5);
             }
@@ -195,6 +215,23 @@ public class BitDetail extends AppCompatActivity {
             }
         }
         if (habitType == GOOD_BIT_ID){
+
+            if (frequency == maxFrequency){
+                if (!(mToast.equals(null))){
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+            else if (frequency > maxFrequency){
+                if (!(mToast.equals(null))){
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+
+
             if (frequency >= maxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.green5);
             }

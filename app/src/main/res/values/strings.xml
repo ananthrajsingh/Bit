@@ -57,4 +57,9 @@
 
     <string name="empty_view_title_text">It\'s a bit lonely here.</string>
     <string name="empty_view_subtitle_text">Start by adding a habit you want to track.</string>
+
+    <string name="limit_reached_toast_bad">Limit reached! You could have tried harder.</string>
+    <string name="limit_crossed_toast_bad">You are already above the limit!</string>
+    <string name="limit_reached_toast_good">Great! You\'ve reached the target.</string>
+    <string name="limit_crossed_toast_good">Congratulations on surpassing your expectations!</string>
 </resources>
