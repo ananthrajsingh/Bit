@@ -54,4 +54,7 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="empty_view_title_text">It\'s a bit lonely here.</string>
+    <string name="empty_view_subtitle_text">Start by adding a habit you want to track.</string>
 </resources>
