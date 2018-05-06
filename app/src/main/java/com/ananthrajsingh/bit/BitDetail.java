@@ -304,6 +304,7 @@ public class BitDetail extends AppCompatActivity {
         Cursor cursor = getCursorForFreqTable(uriToFreqTable);
         int numberOfBitsLeft = cursor.getCount();
 
+        /* When activity is created for the first time */
         if (numberOfBitsLeft == 0){
             Toast.makeText(this, getString(R.string.bit_detail_introduction_toast), Toast.LENGTH_LONG).show();
         }
@@ -318,7 +319,7 @@ public class BitDetail extends AppCompatActivity {
 
         /*
         -------------------------------------------------------------------------------------------------
-         * TODO
+         * COMPLETED
          * THERE IS A BUG!
          * In settings when month is changed, this function assumes those dates as dates of this
          * month. That can be corrected, but that is for another day.
@@ -360,6 +361,11 @@ public class BitDetail extends AppCompatActivity {
                     tableTV.setText(null);
                 }
 
+                /*
+                 * Laying up bits process has ended. Now we'll check if the currentDate(date of last laid bit)
+                 * is equal to today's date. If yes, then we'll check whether maximum limit is reached or not.
+                 * Then we'll show toasts accordingly.
+                 */
                 if (currentDate.equals(getTodaysDate())){
                     if (bitType == BAD_BIT_ID) {
 
@@ -424,5 +430,11 @@ public class BitDetail extends AppCompatActivity {
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
             cursor.close();
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

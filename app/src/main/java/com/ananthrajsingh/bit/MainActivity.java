@@ -245,4 +245,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        finish();
+//        System.exit(0);
+//    }
 }
