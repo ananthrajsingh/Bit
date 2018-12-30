@@ -1,5 +1,6 @@
 package com.ananthrajsingh.bit;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -42,11 +43,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int NOTIFICATION_REPEATER_ALARM_PENDING_INTENT_ID = 12;
 
     @Override
+    @SuppressLint("RestrictedApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setElevation(0f);
         getSupportActionBar().collapseActionView();
+        getSupportActionBar().setElevation(0f);
         getSupportActionBar().setTitle(R.string.main_activity_title);
 
 
@@ -188,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter.swapCursor(null);
     }
 
-//    public void removeHabitFromRv(int position, int idOfHabit){
-//        idToRemoveFromRv = idOfHabit;
+//    public void removeHabitFromRv(int position, int mIdOfHabit){
+//        idToRemoveFromRv = mIdOfHabit;
 //        getSupportLoaderManager().initLoader(DELETED_ROW_DATABASE_ID, null, this);
 //    }
     private void makeSnackBar(){
