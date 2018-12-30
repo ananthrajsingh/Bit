@@ -75,7 +75,9 @@ public class BitDetail extends AppCompatActivity {
         mExpandImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO Send to expanded activity
+                Intent intent1 = new Intent(BitDetail.this, BitDetailExpand.class);
+                startActivity(intent1);
+                // COMPLETED Send to expanded activity
             }
         });
 

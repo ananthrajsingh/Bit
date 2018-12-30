@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ananthrajsingh.bit">
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,17 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<meta-data tools:replace="android:value"/>-->
+
+        <!-- <meta-data tools:replace="android:value"/> -->
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".CreateBit"
@@ -34,7 +39,8 @@
             android:authorities="com.ananthrajsingh.bit"
             android:exported="false" />
 
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,14 +48,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".sync.HabitReminderIntentService"
-            android:exported="false"/>
+            android:exported="false" />
+
         <receiver android:name=".sync.NotificationAlarmReciever">
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
         </receiver>
+
+        <activity android:name=".BitDetailExpand"></activity>
     </application>
 
 </manifest>
