@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_height="wrap_content">
+    <!--We want Bit circle, date and count-->
+
+    <TextView
+        android:id="@+id/expand_list_item_bit_color"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rv_bit" />
+    <TextView
+        android:id="@+id/expand_list_item_date_tv"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_gravity="center_horizontal"
+        tools:text="13/02/2019"/>
+    <TextView
+        android:id="@+id/expand_list_item_count_tv"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:paddingStart="8dp"
+        android:layout_gravity="center_horizontal"
+        tools:text="44"/>
+
+</LinearLayout>

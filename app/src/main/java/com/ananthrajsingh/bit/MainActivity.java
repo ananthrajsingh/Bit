@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         /* Is this activity called after selecting delete from BitDetail?
          * If it would be then, rvPosition and idToRemoveFromRv won't be -1
          * Else, we came here by SplashActivity
+         * loaderId will tell whether we need to load all data from table
+         * or we need to delete the provided row.
          */
         if (rvPosition != -1 && idToRemoveFromRv != -1){
             loaderId = DELETED_ROW_DATABASE_ID;
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
          * within the RecyclerView. It can produce vertical or horizontal list depending
          * on the passed argument.
          * The last parameter (shouldReverseLayout) is true if you want to reverse your
-         * layout. It is generally true in horizontal lists.
+         * layout. It is generally true in horizontal lists. By reversing, we mean that list inflation
+         * would start from bottom of screen. First item at bottom, second will be above it and so on.
          */
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
