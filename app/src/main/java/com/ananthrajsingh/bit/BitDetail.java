@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ananthrajsingh.bit.data.BitContract;
+import com.ananthrajsingh.bit.utilities.FrequencyUtils;
 
 import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
 import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
@@ -316,7 +317,8 @@ public class BitDetail extends AppCompatActivity {
             if(index < 28 && index >= 0){
                 tableTV = (TextView) findViewById(daysResourceId[index]);
                 int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-                int color = getColorGradient(freq, mBitType);
+//                int color = getColorGradient(freq, mBitType);
+                int color = FrequencyUtils.getColorGradient(freq, mMaxFrequency, mBitType, this);
                 tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
                 prevDate = currentDate;
                 if (isFrequencyShown) {

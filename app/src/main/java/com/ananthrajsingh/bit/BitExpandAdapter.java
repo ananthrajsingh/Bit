@@ -20,17 +20,21 @@ public class BitExpandAdapter extends RecyclerView.Adapter<BitExpandAdapter.BitE
 
     private Context mContext;
     private boolean mIsGood;
+    private int mMaxFrequency;
     private Cursor mCursor;
 
     /**
      * This will help us create a new adapter. We are passing context and a boolean variable.
      * Our adapter should know whether it is dealing with a good habit or bad.
-     * @param context
-     * @param isGood
+     * @param context used for inflation of view purpose
+     * @param isGood we should we are dealing with a good habit or bad habit since we don't have
+     *               this field frequency table. Frequency table only has date and frequency.
+     * @param maxFrequency In order to decide shade of color, we need maximum frequency.
      */
-    public BitExpandAdapter(Context context, boolean isGood){
+    public BitExpandAdapter(Context context, boolean isGood, int maxFrequency){
         mContext = context;
         mIsGood = isGood;
+        mMaxFrequency = maxFrequency;
     }
 
     /**
@@ -52,12 +56,14 @@ public class BitExpandAdapter extends RecyclerView.Adapter<BitExpandAdapter.BitE
      * We will be doing he relevant task here. We have cursor here. We will bind data from cursor
      * to the list item using position argument. We assume here that our cursor has all(and only that)
      * information that we need to show in recycler view.
-     * @param holder
-     * @param position
+     * We will do 3 things here, set date, set frequency and decide the color of round circle.
+     * @param holder    holder
+     * @param position the position on view in recycler view
      */
     @Override
     public void onBindViewHolder(BitExpandAdapterViewHolder holder, int position) {
-
+        // We need to get the data to be filled at position.
+        mCursor.moveToPosition(position);
     }
 
     @Override
