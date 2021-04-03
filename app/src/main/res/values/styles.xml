@@ -6,6 +6,17 @@
         <item name="colorPrimary">#1a237e</item>
         <item name="colorPrimaryDark">#000051</item>
         <item name="colorAccent">#64dd17</item>
+        <item name="toolbarStyle">@style/AppTheme.ToolbarStyle</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.ToolbarStyle.Overflow</item> <!-- sets the style for the overflow button -->
+    </style>
+    <!-- This style is where we define the text color of text in actionbar -->
+    <style name="AppTheme.ToolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/white</item>
+    </style>
+
+    <!-- This style is where we define the tint color of the overflow menu button -->
+    <style name="AppTheme.ToolbarStyle.Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">@color/white</item>
     </style>
 
     <style name="BitCircle" parent="Base.Theme.AppCompat">

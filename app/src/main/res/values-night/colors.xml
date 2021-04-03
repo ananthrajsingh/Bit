@@ -27,5 +27,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="text_color">#FFFFFF</color>
+    <color name="text_color_inverse">#000000</color>
+
 
 </resources>

@@ -64,7 +64,7 @@ public class BitDetail extends AppCompatActivity {
         /* Changing the name of ActionBar for the clicked habit */
         getSupportActionBar().setTitle(mHabitName);
 
-        mExpandImageView = (ImageView) findViewById(R.id.expand_imageView);
+//        mExpandImageView = (ImageView) findViewById(R.id.expand_imageView);
         mPlusOneButton = (Button) findViewById(R.id.button);
         if (mBitType == GOOD_BIT_ID){
             mPlusOneButton.setBackground(getDrawable(R.drawable.button_good_ripple));
@@ -77,14 +77,14 @@ public class BitDetail extends AppCompatActivity {
         final Uri freqTableUri = buildUriToFreqTableWithDate(mIdOfHabit);
         setInitialCount(freqTableUri);
 
-        mExpandImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(BitDetail.this, BitDetailExpand.class);
-                startActivity(intent1);
-                // COMPLETED Send to expanded activity
-            }
-        });
+//        mExpandImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(BitDetail.this, BitDetailExpand.class);
+//                startActivity(intent1);
+//                // COMPLETED Send to expanded activity
+//            }
+//        });
 
         mPlusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
