@@ -44,6 +44,7 @@ public class BitAdapter extends RecyclerView.Adapter<BitAdapter.BitAdapterViewHo
      * Say Hi! to him there. Actually, we had a hard time dealing with getTag() and
      * setTag(), which were necessary if we implemented here. We needed _ID of course.
      * That didn't worked out. So here we are letting you read such long paragraph.
+     *
      */
     class BitAdapterViewHolder extends RecyclerView.ViewHolder{
 

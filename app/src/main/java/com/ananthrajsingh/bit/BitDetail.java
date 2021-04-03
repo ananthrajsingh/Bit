@@ -1,5 +1,6 @@
 package com.ananthrajsingh.bit;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -14,10 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
+import com.ananthrajsingh.bit.utilities.FrequencyUtils;
 
 import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
 import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
@@ -33,14 +36,15 @@ import static com.ananthrajsingh.bit.utilities.TimeUtils.weeksdaysResourceId;
 public class BitDetail extends AppCompatActivity {
 
 //    public TextView bitCountTextView;
-    public Button plusOneButton;
-    public long idOfHabit;
-    public int maxFrequency;
-    public int bitType;
-    public String habitName;
-    public int positionInRv; // Used to make this habit disappear from RV on delete
-    public boolean isFrequencyShown = false;
     private Toast mToast;
+    public Button mPlusOneButton;
+    public ImageView mExpandImageView;
+    public long mIdOfHabit;
+    public int mMaxFrequency;
+    public int mBitType;
+    public String mHabitName;
+    public int mPositionInRv; // Used to make this habit disappear from RV on delete
+    public boolean mIsFrequencyShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,29 +54,38 @@ public class BitDetail extends AppCompatActivity {
 
         /* getting information about which item was clicked */
         Intent intent = getIntent();
-        idOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
-        bitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
-        maxFrequency = intent.getIntExtra(getString(R.string.max_frequency_extra), 1);
-        habitName = intent.getStringExtra(getString(R.string.name_extra));
-        positionInRv = intent.getIntExtra(getString(R.string.position_extra), 100);
+        mIdOfHabit = intent.getLongExtra(getString(R.string.item_id_extra), -1);
+        mBitType = intent.getIntExtra(getString(R.string.item_type_extra), -1);
+        mMaxFrequency = intent.getIntExtra(getString(R.string.max_frequency_extra), 1);
+        mHabitName = intent.getStringExtra(getString(R.string.name_extra));
+        mPositionInRv = intent.getIntExtra(getString(R.string.position_extra), 100);
 
         /* Changing the name of ActionBar for the clicked habit */
-        getSupportActionBar().setTitle(habitName);
+        getSupportActionBar().setTitle(mHabitName);
 
-        plusOneButton = (Button) findViewById(R.id.button);
-        if (bitType == GOOD_BIT_ID){
-            plusOneButton.setBackground(getDrawable(R.drawable.button_good_ripple));
+        mExpandImageView = (ImageView) findViewById(R.id.expand_imageView);
+        mPlusOneButton = (Button) findViewById(R.id.button);
+        if (mBitType == GOOD_BIT_ID){
+            mPlusOneButton.setBackground(getDrawable(R.drawable.button_good_ripple));
         }
         else {
-            plusOneButton.setBackground(getDrawable(R.drawable.button_bad_ripple));
+            mPlusOneButton.setBackground(getDrawable(R.drawable.button_bad_ripple));
         }
 
         /* This will set 0 if there is no today's row, else will show today's count */
-        final Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
+        final Uri freqTableUri = buildUriToFreqTableWithDate(mIdOfHabit);
         setInitialCount(freqTableUri);
 
+        mExpandImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(BitDetail.this, BitDetailExpand.class);
+                startActivity(intent1);
+                // COMPLETED Send to expanded activity
+            }
+        });
 
-        plusOneButton.setOnClickListener(new View.OnClickListener() {
+        mPlusOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -95,13 +108,13 @@ public class BitDetail extends AppCompatActivity {
                     int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY)) + 1;
                 }
                 /* This will update matrix after every click */
-                showDataInMonthMatrix(isFrequencyShown);
+                showDataInMonthMatrix(mIsFrequencyShown);
             }
         });
         /*
          * This will fill dots in the matrix on start up of the activity
          */
-       showDataInMonthMatrix(isFrequencyShown);
+       showDataInMonthMatrix(mIsFrequencyShown);
     }
 
     /**
@@ -134,13 +147,13 @@ public class BitDetail extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Uri uri1 = buildUriToMainTable(idOfHabit);
+        Uri uri1 = buildUriToMainTable(mIdOfHabit);
         if (id == R.id.action_delete){
-//            MainActivity.removeHabitFromRv(positionInRv, idOfHabit);
+//            MainActivity.removeHabitFromRv(mPositionInRv, mIdOfHabit);
 //                getContentResolver().delete(uri1, null, null);
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(getString(R.string.rv_position_extra), positionInRv);
-                intent.putExtra(getString(R.string.id_of_habit_extra), idOfHabit);
+                intent.putExtra(getString(R.string.rv_position_extra), mPositionInRv);
+                intent.putExtra(getString(R.string.id_of_habit_extra), mIdOfHabit);
                 startActivity(intent);
                 return true;
             }
@@ -148,13 +161,13 @@ public class BitDetail extends AppCompatActivity {
             CharSequence title = item.getTitle();
             if (title.equals(getString(R.string.action_show_frequency))) {
                 item.setTitle(getString(R.string.action_hide_frequency));
-                isFrequencyShown = true;
+                mIsFrequencyShown = true;
             }
             else {
                 item.setTitle(getString(R.string.action_show_frequency));
-                isFrequencyShown = false;
+                mIsFrequencyShown = false;
             }
-            showDataInMonthMatrix(isFrequencyShown);
+            showDataInMonthMatrix(mIsFrequencyShown);
         }
         //DON'T return true here
         /*
@@ -175,11 +188,10 @@ public class BitDetail extends AppCompatActivity {
                 null);
     }
 
+    @SuppressLint("ResourceAsColor")
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
-
-
 //            if (frequency == maxFrequency){
 //                if (mToast != null){
 //                    mToast.cancel();
@@ -194,21 +206,19 @@ public class BitDetail extends AppCompatActivity {
 //                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
 //                mToast.show();
 //            }
-
-
-            if (frequency >= maxFrequency){
+            if (frequency >= mMaxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.red5);
             }
-            else if (frequency >= (int) ((4*maxFrequency)/5)){
+            else if (frequency >= (int) ((4* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.red4);
             }
-            else if (frequency >= (int) ((3*maxFrequency)/5)){
+            else if (frequency >= (int) ((3* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.red3);
             }
-            else if (frequency >= (int) ((2*maxFrequency)/5)){
+            else if (frequency >= (int) ((2* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.red2);
             }
-            else if (frequency >= (int) (maxFrequency/5)){
+            else if (frequency >= (int) (mMaxFrequency /5)){
                 retColor = ContextCompat.getColor(this, R.color.red1);
             }
             else{
@@ -216,7 +226,6 @@ public class BitDetail extends AppCompatActivity {
             }
         }
         if (habitType == GOOD_BIT_ID){
-
 //            if (frequency == maxFrequency){
 //                if (mToast != null){
 //                    mToast.cancel();
@@ -232,20 +241,19 @@ public class BitDetail extends AppCompatActivity {
 //                mToast.show();
 //            }
 
-
-            if (frequency >= maxFrequency){
+            if (frequency >= mMaxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.green5);
             }
-            else if (frequency >= (int) ((4*maxFrequency)/5)){
+            else if (frequency >= (int) ((4* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.green4);
             }
-            else if (frequency >= (int) ((3*maxFrequency)/5)){
+            else if (frequency >= (int) ((3* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.green3);
             }
-            else if (frequency >= (int) ((2*maxFrequency)/5)){
+            else if (frequency >= (int) ((2* mMaxFrequency)/5)){
                 retColor = ContextCompat.getColor(this, R.color.green2);
             }
-            else if (frequency >= (int) (maxFrequency/5)){
+            else if (frequency >= (int) (mMaxFrequency /5)){
                 retColor = ContextCompat.getColor(this, R.color.green1);
             }
             else{
@@ -259,8 +267,8 @@ public class BitDetail extends AppCompatActivity {
 
     private void addTodaysRow(){
 
-        Uri freqTableUri = buildUriToFreqTableWithDate(idOfHabit);
-        Uri uri = buildUriToFreqTable(idOfHabit);
+        Uri freqTableUri = buildUriToFreqTableWithDate(mIdOfHabit);
+        Uri uri = buildUriToFreqTable(mIdOfHabit);
 
         /* This will insert a new row for today's entry, since we figured out that there is no today's row */
         Uri returnedUri = getContentResolver().insert(uri, null);
@@ -297,7 +305,7 @@ public class BitDetail extends AppCompatActivity {
         }
 
         /*Reference to the table of clicked item */
-        Uri uriToFreqTable = buildUriToFreqTable(idOfHabit);
+        Uri uriToFreqTable = buildUriToFreqTable(mIdOfHabit);
         TextView tableTV;
         String currentDate;
         String prevDate = null;
@@ -346,7 +354,8 @@ public class BitDetail extends AppCompatActivity {
             if(index < 28 && index >= 0){
                 tableTV = (TextView) findViewById(daysResourceId[index]);
                 int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
-                int color = getColorGradient(freq, bitType);
+//                int color = getColorGradient(freq, mBitType);
+                int color = FrequencyUtils.getColorGradient(freq, mMaxFrequency, mBitType, this);
                 tableTV.setBackgroundTintList(ColorStateList.valueOf(color));
                 prevDate = currentDate;
                 if (isFrequencyShown) {

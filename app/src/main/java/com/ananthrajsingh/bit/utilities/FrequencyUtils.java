@@ -1,13 +1,19 @@
 package com.ananthrajsingh.bit.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.ananthrajsingh.bit.R;
 import com.ananthrajsingh.bit.data.BitContract;
 import com.ananthrajsingh.bit.data.BitDbHelper;
 
+import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
+import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 
 /**
@@ -93,4 +99,53 @@ public class FrequencyUtils {
          */
         return uri.getPathSegments().get(0);
     }
+
+    @SuppressLint("ResourceAsColor")
+    public static int getColorGradient(int frequency, int maxFrequency, int habitType, Context context) {
+        int retColor = R.color.white;
+        if (habitType == BAD_BIT_ID) {
+            if (frequency >= maxFrequency){
+                retColor = ContextCompat.getColor(context, R.color.red5);
+            }
+            else if (frequency >= (int) ((4* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.red4);
+            }
+            else if (frequency >= (int) ((3* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.red3);
+            }
+            else if (frequency >= (int) ((2* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.red2);
+            }
+            else if (frequency >= (int) (maxFrequency /5)){
+                retColor = ContextCompat.getColor(context, R.color.red1);
+            }
+            else{
+                retColor = ContextCompat.getColor(context, R.color.red1);
+            }
+        }
+        if (habitType == GOOD_BIT_ID){
+            if (frequency >= maxFrequency){
+                retColor = ContextCompat.getColor(context, R.color.green5);
+            }
+            else if (frequency >= (int) ((4* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.green4);
+            }
+            else if (frequency >= (int) ((3* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.green3);
+            }
+            else if (frequency >= (int) ((2* maxFrequency)/5)){
+                retColor = ContextCompat.getColor(context, R.color.green2);
+            }
+            else if (frequency >= (int) (maxFrequency /5)){
+                retColor = ContextCompat.getColor(context, R.color.green1);
+            }
+            else{
+                retColor = ContextCompat.getColor(context, R.color.green1);
+            }
+        }
+
+
+        return retColor;
+    }
+
 }
