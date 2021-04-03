@@ -84,11 +84,11 @@ public class CreateBit extends AppCompatActivity {
                     Uri uriToMainTable = buildUriToMainTable();
                     Uri returnedUri = getContentResolver().insert(uriToMainTable, values);
                     //Check is insertion was successful
-                    if (returnedUri != null)
-                        Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
-                    else {
-                        Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
-                    }
+//                    if (returnedUri != null)
+//                        Toast.makeText(getBaseContext(), "Inserted - " + returnedUri, Toast.LENGTH_LONG).show();
+//                    else {
+//                        Toast.makeText(getBaseContext(), "Not inserted! ", Toast.LENGTH_LONG).show();
+//                    }
                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(intent);
 
@@ -106,6 +106,19 @@ public class CreateBit extends AppCompatActivity {
 
 
     }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        editTextName.setText(null);
+//        editTextMaxCount.setText(null);
+//
+//    }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

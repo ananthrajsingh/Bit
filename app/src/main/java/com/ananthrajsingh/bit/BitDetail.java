@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ananthrajsingh.bit.data.BitContract;
 import com.ananthrajsingh.bit.utilities.FrequencyUtils;
@@ -29,12 +30,14 @@ import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToFreqTable
 import static com.ananthrajsingh.bit.utilities.DatabaseUtils.buildUriToMainTable;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.daysResourceId;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.getDateDifference;
+import static com.ananthrajsingh.bit.utilities.TimeUtils.getTodaysDate;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.todaysDayOffset;
 import static com.ananthrajsingh.bit.utilities.TimeUtils.weeksdaysResourceId;
 
 public class BitDetail extends AppCompatActivity {
 
 //    public TextView bitCountTextView;
+    private Toast mToast;
     public Button mPlusOneButton;
     public ImageView mExpandImageView;
     public long mIdOfHabit;
@@ -190,6 +193,20 @@ public class BitDetail extends AppCompatActivity {
     private int getColorGradient(int frequency, int habitType) {
         int retColor = R.color.white;
         if (habitType == BAD_BIT_ID) {
+//            if (frequency == maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
+//            else if (frequency > maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
             if (frequency >= mMaxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.red5);
             }
@@ -210,6 +227,21 @@ public class BitDetail extends AppCompatActivity {
             }
         }
         if (habitType == GOOD_BIT_ID){
+//            if (frequency == maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
+//            else if (frequency > maxFrequency){
+//                if (mToast != null){
+//                    mToast.cancel();
+//                }
+//                mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
+//                mToast.show();
+//            }
+
             if (frequency >= mMaxFrequency){
                 retColor = ContextCompat.getColor(this, R.color.green5);
             }
@@ -280,6 +312,11 @@ public class BitDetail extends AppCompatActivity {
         String prevDate = null;
         Cursor cursor = getCursorForFreqTable(uriToFreqTable);
         int numberOfBitsLeft = cursor.getCount();
+
+        /* When activity is created for the first time */
+        if (numberOfBitsLeft == 0){
+            Toast.makeText(this, getString(R.string.bit_detail_introduction_toast), Toast.LENGTH_LONG).show();
+        }
         /*
          * This if case will take care of case when new Bit is created and this activity is opened
          * for the first time. This will initialize prevDate so that it is not null
@@ -291,7 +328,7 @@ public class BitDetail extends AppCompatActivity {
 
         /*
         -------------------------------------------------------------------------------------------------
-         * TODO
+         * COMPLETED
          * THERE IS A BUG!
          * In settings when month is changed, this function assumes those dates as dates of this
          * month. That can be corrected, but that is for another day.
@@ -333,6 +370,48 @@ public class BitDetail extends AppCompatActivity {
                 else {
                     tableTV.setText(null);
                 }
+
+                /*
+                 * Laying up bits process has ended. Now we'll check if the currentDate(date of last laid bit)
+                 * is equal to today's date. If yes, then we'll check whether maximum limit is reached or not.
+                 * Then we'll show toasts accordingly.
+                 */
+                if (currentDate.equals(getTodaysDate())){
+                    if (bitType == BAD_BIT_ID) {
+
+
+                        if (freq == maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        } else if (freq > maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_bad), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        }
+                    }
+                    if (bitType == GOOD_BIT_ID) {
+
+                        if (freq == maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        } else if (freq > maxFrequency) {
+                            if (mToast != null) {
+                                mToast.cancel();
+                            }
+                            mToast = Toast.makeText(this, getString(R.string.limit_crossed_toast_good), Toast.LENGTH_SHORT);
+                            mToast.show();
+                        }
+                    }
+
+                }
             }
 
 
@@ -361,5 +440,11 @@ public class BitDetail extends AppCompatActivity {
             int freq = cursor.getInt(cursor.getColumnIndex(BitContract.FrequencTableEntry.COLUMN_FREQUENCY));
             cursor.close();
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

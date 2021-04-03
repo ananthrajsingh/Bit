@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LinearLayoutManager mLayoutManager;
     private static long idToRemoveFromRv;
     private int loaderId;
+    private View mEmptyView;
 
     public static final int BAD_BIT_ID = 1;
     public static final int GOOD_BIT_ID = 2;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getSupportActionBar().collapseActionView();
         getSupportActionBar().setElevation(0f);
         getSupportActionBar().setTitle(R.string.main_activity_title);
+
+        mEmptyView = (View) findViewById(R.id.empty_view);
 
 
         setupNotificationRepeater();
@@ -187,6 +190,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
+        if (data.getCount() == 0){
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else{
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -240,4 +251,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        finish();
+//        System.exit(0);
+//    }
 }
