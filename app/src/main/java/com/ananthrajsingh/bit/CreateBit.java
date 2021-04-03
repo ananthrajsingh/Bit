@@ -4,13 +4,15 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import static com.ananthrajsingh.bit.MainActivity.BAD_BIT_ID;
 import static com.ananthrajsingh.bit.MainActivity.GOOD_BIT_ID;
@@ -30,7 +32,6 @@ public class CreateBit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bit);
         getSupportActionBar().setTitle(R.string.create_bit_title);
-
 
         /*Extracting information that the user entered and hit FAB*/
 

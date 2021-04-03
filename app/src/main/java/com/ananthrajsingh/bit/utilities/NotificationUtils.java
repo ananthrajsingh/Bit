@@ -9,9 +9,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat.Action;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.Action;
+import androidx.core.content.ContextCompat;
 
 import com.ananthrajsingh.bit.MainActivity;
 import com.ananthrajsingh.bit.R;
