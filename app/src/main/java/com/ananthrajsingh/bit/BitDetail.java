@@ -377,16 +377,16 @@ public class BitDetail extends AppCompatActivity {
                  * Then we'll show toasts accordingly.
                  */
                 if (currentDate.equals(getTodaysDate())){
-                    if (bitType == BAD_BIT_ID) {
+                    if (mBitType == BAD_BIT_ID) {
 
 
-                        if (freq == maxFrequency) {
+                        if (freq == mMaxFrequency) {
                             if (mToast != null) {
                                 mToast.cancel();
                             }
                             mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_bad), Toast.LENGTH_SHORT);
                             mToast.show();
-                        } else if (freq > maxFrequency) {
+                        } else if (freq > mMaxFrequency) {
                             if (mToast != null) {
                                 mToast.cancel();
                             }
@@ -394,15 +394,15 @@ public class BitDetail extends AppCompatActivity {
                             mToast.show();
                         }
                     }
-                    if (bitType == GOOD_BIT_ID) {
+                    if (mBitType == GOOD_BIT_ID) {
 
-                        if (freq == maxFrequency) {
+                        if (freq == mMaxFrequency) {
                             if (mToast != null) {
                                 mToast.cancel();
                             }
                             mToast = Toast.makeText(this, getString(R.string.limit_reached_toast_good), Toast.LENGTH_SHORT);
                             mToast.show();
-                        } else if (freq > maxFrequency) {
+                        } else if (freq > mMaxFrequency) {
                             if (mToast != null) {
                                 mToast.cancel();
                             }

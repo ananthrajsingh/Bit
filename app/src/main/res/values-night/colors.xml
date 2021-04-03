@@ -7,7 +7,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="circle_background">#ECEFF1</color>
+    <color name="circle_background">#333333</color>
 
     <color name="green1">#C8E6C9</color>
     <color name="green2">#81C784</color>
@@ -26,7 +26,6 @@
     <color name="yellow3">#FFFF00</color>
 
     <color name="black_overlay">#66000000</color>
-    <color name="text_color">#000000</color>
-
+    <color name="text_color">#FFFFFF</color>
 
 </resources>

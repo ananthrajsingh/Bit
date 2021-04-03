@@ -16,7 +16,6 @@
         <!-- <meta-data tools:replace="android:value"/> -->
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize"
             android:launchMode="standard"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize">
