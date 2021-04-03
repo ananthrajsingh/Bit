@@ -16,8 +16,9 @@
         <!-- <meta-data tools:replace="android:value"/> -->
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="standard"
+            android:noHistory="true"
             android:windowSoftInputMode="adjustResize">
 
             <!-- <intent-filter> -->
@@ -29,9 +30,13 @@
         </activity>
         <activity
             android:name=".CreateBit"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".BitDetail"
+            android:noHistory="true"
+
             android:windowSoftInputMode="adjustResize" />
 
         <provider

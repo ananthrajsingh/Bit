@@ -44,6 +44,7 @@
 
     <string name="edittext_name_hint">Enter Name</string>
     <string name="edittext_frequency_hint">Enter Frequency</string>
+    <string name="textview_frequency_hint">The maximum time you expect to do this habit in a day.</string>
     <string name="radio_good">Good</string>
     <string name="radio_bad">Bad</string>
     <string name="habit_type_textview">Habit Type</string>
@@ -55,5 +56,13 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="empty_view_title_text">It\'s a bit lonely here.</string>
+    <string name="empty_view_subtitle_text">Start by adding a habit you want to track.</string>
+
+    <string name="limit_reached_toast_bad">Limit reached! You could have tried harder.</string>
+    <string name="limit_crossed_toast_bad">You are already above the limit!</string>
+    <string name="limit_reached_toast_good">Great! You\'ve reached the target.</string>
+    <string name="limit_crossed_toast_good">Congratulations on surpassing your expectations!</string>
+    <string name="bit_detail_introduction_toast">Press +1 to get started</string>
     <string name="expand_content_description">Show all bits</string>
 </resources>

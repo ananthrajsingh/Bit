@@ -45,7 +45,7 @@ public class NotificationUtils {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         context.getString(R.string.notification_body)))
                 .addAction(ignoreReminderAction(context))
-                .setDefaults(Notification.DEFAULT_VIBRATE)
+//                .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true);
 
